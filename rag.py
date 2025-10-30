@@ -1,8 +1,8 @@
 import faiss
 import numpy as np
 from sentence_transformers import CrossEncoder, SentenceTransformer
-from mlx_lm import load, generate
-from llama_cpp import Llama
+# from mlx_lm import load, generate
+# from llama_cpp import Llama
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # model_name = "tarun7r/Finance-Llama-8B-q4_k_m-GGUF"  # Check for the correct repository
@@ -16,10 +16,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 #     verbose=False         # Disable verbose logging
 # )
 
-# tokenizer = AutoTokenizer.from_pretrained("mlx-community/Mistral-7B-Instruct-v0.3-4bit")
-# model = AutoModelForCausalLM.from_pretrained("mlx-community/Mistral-7B-Instruct-v0.3-4bit")
+tokenizer = AutoTokenizer.from_pretrained("unsloth/mistral-7b-instruct-v0.3-bnb-4bit")
+model = AutoModelForCausalLM.from_pretrained("unsloth/mistral-7b-instruct-v0.3-bnb-4bit")
 
-model, tokenizer = load("mlx-community/Mistral-7B-Instruct-v0.3-4bit")
+# model, tokenizer = load("mlx-community/Mistral-7B-Instruct-v0.3-4bit")
 
 # Load embedding model (fast & good multilingual)
 embedder = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
@@ -85,11 +85,11 @@ Reason: <detailed reasoning with exact date (dd-MMMM-yyyy)>
     """
 
     #MLX
-    result = ""
-    for token in generate(model, tokenizer, prompt, max_tokens=512):
-        result += token
+    #result = ""
+    #for token in generate(model, tokenizer, prompt, max_tokens=512):
+    #    result += token
     # Generate response
-    return result
+    #return result
 
     #GGUF
     # output = llm(
@@ -110,10 +110,10 @@ Reason: <detailed reasoning with exact date (dd-MMMM-yyyy)>
     # answer_start = int(inputs.shape[-1])
     # pred = tokenizer.decode(outputs[answer_start:], skip_special_tokens=True)
 
-    # input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-    # output = model.generate(input_ids, max_length=512)
-    # resp = tokenizer.decode(output[0], skip_special_tokens=True)
-    # return resp
+    input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+    output = model.generate(input_ids, max_length=512)
+    resp = tokenizer.decode(output[0], skip_special_tokens=True)
+    return resp
 
 
 # Load and index articles
