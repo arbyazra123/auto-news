@@ -1,6 +1,8 @@
 import re
 import json
 
+max_chars = 2000
+
 def parse_articles(file_path):
     """Parse articles from news.txt"""
     with open(file_path, "r", encoding="utf-8") as f:
@@ -70,7 +72,7 @@ def create_condensed_file(articles, output_file="news_condensed.txt"):
         
         for i, article in enumerate(articles, 1):
             # Extract key content only
-            condensed_content = extract_key_content(article['content'], max_chars=1000)
+            condensed_content = extract_key_content(article['content'], max_chars=max_chars)
             
             f.write(f"## Article {i}\n")
             f.write(f"**Title:** {article['title']}\n")
@@ -105,7 +107,7 @@ def create_structured_prompt(articles, output_file="claude_pro_prompt.txt"):
 """
     
     for i, article in enumerate(articles, 1):
-        condensed_content = extract_key_content(article['content'], max_chars=1000)
+        condensed_content = extract_key_content(article['content'], max_chars=max_chars)
         prompt += f"\n**[Article {i}]**\n"
         prompt += f"Title: {article['title']}\n"
         prompt += f"Source: {article['source']}\n"
@@ -133,7 +135,7 @@ def main():
     
     # Calculate size reduction
     original_size = sum(len(a['content']) for a in articles)
-    condensed_size = sum(len(extract_key_content(a['content'], 400)) for a in articles)
+    condensed_size = sum(len(extract_key_content(a['content'], max_chars)) for a in articles)
     reduction = ((original_size - condensed_size) / original_size) * 100
     
     print(f"📊 Size Analysis:")
