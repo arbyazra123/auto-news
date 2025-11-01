@@ -1,0 +1,8 @@
+bash: run_daily_analysis.sh: No such file or directory
+======================================
+   Daily Stock Analysis Automation
+======================================
+
+🔄 Activating conda environment 'ml'...
+/home/arboapin/ai/daily-stock-summary/run_daily_analysis.sh: line 14: conda: command not found
+/home/arboapin/ai/daily-stock-summary/run_daily_analysis.sh: line 15: conda: command not found

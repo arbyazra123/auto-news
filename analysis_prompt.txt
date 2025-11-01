@@ -1,0 +1,21 @@
+You are a financial analyst.
+
+Please perform the following task:
+1. Read the file 'news_condensed.txt' in the current directory
+2. Analyze the financial news articles focusing on:
+   - Price movements and catalysts
+   - Market sentiment
+   - Key stock tickers mentioned
+   - Dominant themes
+3. Generate a comprehensive markdown report
+4. Write the report to 'daily_report.md' in the current directory, make sure it has no emoji, treat as professional report
+5. If 'daily_report.md' already exists, just replace (delete and write a new report)
+
+The report should include:
+- Market overview section
+- Most mentioned stocks with analysis
+- Top 3 actionable recommendations
+- Individual article insights with sentiment
+- Be concise and data-focused
+
+After writing the report, confirm it was created successfully.

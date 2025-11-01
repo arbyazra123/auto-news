@@ -6,7 +6,7 @@ from llama_cpp import Llama
 # Load GGUF model using llama-cpp-python
 # Download a GGUF model file first, e.g., from HuggingFace
 # Example: Qwen2.5-0.5B-Instruct quantized GGUF
-MODEL_PATH = "ShortGPT-Qwen2.5-4B.Q6_K.gguf"  # Update this path
+MODEL_PATH = "Qwen3-4B-Q6_K.gguf"  # Update this path
 
 # Initialize the model
 llm = Llama(
