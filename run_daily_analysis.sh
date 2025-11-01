@@ -1,42 +1,35 @@
 #!/bin/bash
-# Complete automated workflow for daily stock analysis
+# Automated daily stock analysis
 
 set -e  # Exit on error
 
-echo "======================================"
-echo "   Daily Stock Analysis Automation"
-echo "======================================"
-echo ""
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
+
+log "Starting daily stock analysis automation"
 
 # Check if already in the 'ml' environment, if not activate it
 if [ "$CONDA_DEFAULT_ENV" != "ml" ]; then
-    echo "🔄 Activating conda environment 'ml'..."
-	source /home/arboapin/miniconda3/etc/profile.d/conda.sh
+    log "Activating conda environment 'ml'"
+    source /home/arboapin/miniconda3/etc/profile.d/conda.sh
     conda activate ml
 else
-    echo "✓ Already in conda environment 'ml'"
+    log "Already in conda environment 'ml'"
 fi
 
 # Step 1 & 2: Prepare news
-echo "📰 Running news preparation..."
+log "Running news preparation"
 rm -f news.txt
 rm -f news_condensed.txt
 bash prepare_news.sh
 
-echo ""
-echo "======================================"
-echo "🤖 Step 3: Running Claude Code analysis..."
-echo "======================================"
-echo ""
-
-# Step 3: Invoke Claude Code to analyze and generate report
-# Using the Claude Code CLI with the prompt
+# Step 3: Run analysis
+log "Running Claude Code analysis"
 cat analysis_prompt.txt | claude -p --dangerously-skip-permissions
 
-echo ""
-echo "======================================"
-echo "✅ Analysis complete!"
-echo "======================================"
-echo ""
-echo "📊 Daily report generated at: daily_report.md"
+log "Analysis complete"
+log "Daily report generated at: daily_report.md"
+
 conda deactivate
+log "Conda environment deactivated"

@@ -32,10 +32,16 @@ def get_sites():
             "time_tag": None,
             "pagination_tag": None,
         },
+        {
+            "url": "https://www.idxchannel.com/market-news",
+            "item_tag": "div.bt-con",
+            "time_tag": None,
+            "pagination_tag": None,
+        },
     ]
 
 
-def scrape_site(config, max_pages=3):
+def scrape_site(config, max_pages=3, max_item=15):
     """
     Scrape one site based on config.
     Only collects today's articles, follows pagination up to max_pages.
@@ -63,7 +69,10 @@ def scrape_site(config, max_pages=3):
             break
 
         # today_str = date.today().strftime("%Y-%m-%d")  # YYYY-MM-DD
+        curr_item = 0
         for item in items:
+            if curr_item >= max_item:
+                break
             title_tag = item.find("a", href=True)
             if not title_tag:
                 continue
@@ -95,6 +104,7 @@ def scrape_site(config, max_pages=3):
                 # "time": pub_time,
                 "content": content
             })
+            curr_item += 1
 
         # find pagination (if any)
         if config["pagination_tag"]:
