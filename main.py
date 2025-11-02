@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from datetime import datetime, date
 
 def log(message: str):
@@ -27,13 +27,13 @@ def get_sites():
         {
             "url": "https://market.bisnis.com/bursa-saham",
             "item_tag": "div.art--row",
-            "time_tag": "div.artDate",
+            "time_tag": "div.detailsAttributeDates",
             "pagination_tag": "a.btn.page-link.text-dark",
         },
         {
             "url": "https://www.cnbcindonesia.com/tag/saham",
             "item_tag": "div.nhl-list",
-            "time_tag": None,
+            "time_tag": "div.text-cm",
             "pagination_tag": None,
         },
         {
@@ -45,7 +45,7 @@ def get_sites():
     ]
 
 
-def scrape_site(config, max_pages=3, max_item=15):
+def scrape_site(config, max_pages=3, max_item=50):
     """
     Scrape one site based on config.
     Only collects today's articles, follows pagination up to max_pages.
@@ -83,29 +83,26 @@ def scrape_site(config, max_pages=3, max_item=15):
             title = title_tag.get_text(strip=True)
             link = urljoin(url, title_tag["href"])
 
-            # extract time
-            # pub_time = None
-            # if config["time_tag"]:
-            #     time_tag = item.select_one(config["time_tag"])
-            #     if time_tag:
-            #         pub_time = time_tag.get_text(strip=True)
-
-            # ✅ filter only today's news
-            # if pub_time and today_str not in pub_time:
-            #     continue
-
             # fetch detail content
             try:
-                detail_resp = requests.get(link, headers=headers, timeout=15)
+                detail_resp = requests.get(link, headers=headers, timeout=30)
                 detail_soup = BeautifulSoup(detail_resp.text, "html.parser")
                 content = " ".join(p.get_text(" ", strip=True) for p in detail_soup.find_all("p"))
+
+                if not title:
+                    # Extract title from the URL slug
+                    path = urlparse(link).path  # e.g. "/2025/11/02/stock-market-analysis-today.html"
+                    slug = path.strip("/").split("/")[-1]  # e.g. "stock-market-analysis-today.html"
+                    slug = slug.split(".")[0]  # remove ".html" if present
+                    title = slug.replace("-", " ").replace("_", " ").title()
+
             except Exception as e:
                 content = f"(could not fetch detail: {e})"
 
             results.append({
                 "title": title,
                 "link": link,
-                # "time": pub_time,
+                # "time": datetime.now().strftime("%Y-%m-%d"),
                 "content": content
             })
             curr_item += 1
@@ -142,6 +139,6 @@ def save_to_txt(articles, filename="news.txt"):
 if __name__ == "__main__":
     all_results = []
     for site in get_sites():
-        all_results.extend(scrape_site(site, max_pages=2))
+        all_results.extend(scrape_site(site, max_pages=2, max_item=50))
     save_to_txt(all_results)
     log(f"Collected {len(all_results)} news")

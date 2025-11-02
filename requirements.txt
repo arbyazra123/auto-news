@@ -1,0 +1,14 @@
+# Web scraping
+requests==2.31.0
+beautifulsoup4==4.12.3
+
+# RAG & Vector Database
+pymilvus==2.4.3
+sentence-transformers==2.5.1
+
+# Deep learning backend (for sentence-transformers)
+torch==2.2.2
+transformers==4.38.2
+
+# Utilities
+numpy==1.26.4
