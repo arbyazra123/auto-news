@@ -7,8 +7,7 @@ pymilvus==2.4.3
 sentence-transformers==2.5.1
 
 # Deep learning backend (for sentence-transformers)
-# CPU-only version (no CUDA) - much smaller download
-torch==2.2.2+cpu --index-url https://download.pytorch.org/whl/cpu
+torch==2.2.2
 transformers==4.38.2
 
 # Utilities
