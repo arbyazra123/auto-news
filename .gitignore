@@ -4,3 +4,4 @@ venv
 *.log
 news.txt
 news_condensed.txt
+rag/volumes
