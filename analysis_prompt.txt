@@ -17,5 +17,6 @@ The report should include:
 - Top 3 actionable recommendations
 - Honorable article insights with sentiment
 - Be concise and data-focused
+- Important - write in Bahasa Indonesia, but for special terms, use English
 
 After writing the report, confirm it was created successfully.
