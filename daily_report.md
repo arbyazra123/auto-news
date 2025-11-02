@@ -1,316 +1,274 @@
-# Daily Financial Market Report - October 31, 2025
-
-## Executive Summary
-Indonesian stock market experienced moderate volatility during the week ending October 31, 2025, with IHSG declining 1.3% to close at 8,163.88 amid mixed corporate earnings season. Despite the index weakness, foreign investors recorded net buying of Rp2.17 trillion in the regular market, primarily targeting banking and telecommunication blue chips. Market capitalization contracted 2.48% to Rp14.857 trillion, though average daily trading value increased 1.55% to Rp22.63 trillion.
-
-## Market Overview
-
-**IHSG Performance:**
-- Weekly decline: 1.3% to level 8,163.88 (from 8,271.72)
-- Year-to-date gain: 15.31%
-- Monthly gain (October): 0.56%
-- Intraday support: 8,144.08 / resistance: 8,215.55
-
-**Market Capitalization:**
-- Current: Rp14.857 trillion (down 2.48% from Rp15.234 trillion)
-
-**Trading Volume:**
-- Average daily transaction value: Rp22.63 trillion (up 1.55% week-over-week)
-- Daily transaction on Oct 31: Rp21.81 trillion involving 36.17 billion shares
-
-**Foreign Investor Activity:**
-- Weekly net buy (regular market): Rp2.17 trillion
-- Daily net buy (Oct 30): Rp945.56 million (regular market), Rp784.99 million (all markets)
-- Daily net buy (Oct 31): Rp1.13 trillion
-
-**Key Market Drivers:**
-- Q3 2025 corporate earnings releases creating mixed sentiment
-- MSCI free float methodology revision causing portfolio adjustments
-- Window dressing expectations heading into year-end
-- Rebalancing of LQ45, IDX30, and IDX80 indices
-- Federal Reserve hawkish stance limiting rate cut expectations
-- Stabilizing domestic macroeconomic conditions (low inflation, trade surplus)
-
-## Most Mentioned Stocks
-
-### PT Bank Mandiri (Persero) Tbk (BMRI)
-- Price movement: +3.23% to Rp4,800 (Oct 30), -1.67% to Rp4,720 (Oct 31)
-- Key catalyst: Strong foreign buying worth Rp649.25 billion; positive sentiment ahead of Q3 results
-- Sentiment: Bullish
-
-### PT Bank Central Asia Tbk (BBCA)
-- Price movement: -0.87% to Rp8,525 (Oct 30), continued weakness Oct 31
-- Key catalyst: Foreign net buy of Rp1.61 trillion during the week despite price decline
-- Sentiment: Neutral to Bullish (heavy accumulation despite weakness)
-
-### PT Bank Rakyat Indonesia (Persero) Tbk (BBRI)
-- Price movement: +0.51% to Rp3,910 (Oct 30), +1.79% to Rp3,980 (Oct 31)
-- Key catalyst: Consistent foreign buying; strong positioning in banking sector
-- Sentiment: Bullish
-
-### PT Bank Negara Indonesia (Persero) Tbk (BBNI)
-- Price movement: Mixed performance during the week
-- Key catalyst: Q3 2025 laba bersih Rp15.1 triliun (down 7.3% YoY but 73.5% of annual target); best-in-class cost-to-income ratio at 46.1%; DPK growth 21.4% YoY to Rp934.3 trillion
-- Sentiment: Bullish (efficient operations, rebound potential noted by CGS International)
-
-### PT Bank KB Indonesia Tbk (BBKP)
-- Price movement: Positive momentum
-- Key catalyst: Turnaround from Rp2.73 trillion loss to Rp265 billion profit in Q3 2025; credit growth 10.83% YoY; CASA growth 38.02% YoY
-- Sentiment: Bullish
-
-### PT Allo Bank Indonesia Tbk (BBHI)
-- Price movement: Stable
-- Key catalyst: Announced Rp119 billion buyback program (Oct 30, 2025 - Jan 29, 2026); Q3 profit up 25.54% YoY to Rp379.88 billion; LDR improved from 148.85% to 96.57%
-- Sentiment: Bullish
-
-### PT Telkom Indonesia (Persero) Tbk (TLKM)
-- Price movement: -1.23% to Rp3,210
-- Key catalyst: Q3 2025 laba turun 10.69% YoY to Rp15.78 trillion; revenue down 2.31% to Rp109.61 trillion; foreign net buy Rp198.99 billion weekly, Rp53.92 billion daily
-- Sentiment: Neutral (weak fundamentals but foreign accumulation)
-
-### PT GoTo Gojek Tokopedia Tbk (GOTO)
-- Price movement: +7.14% (Oct 30)
-- Key catalyst: First-ever adjusted pre-tax profit of Rp62 billion in Q3 2025; raised 2025 adjusted EBITDA guidance to Rp1.8-1.9 trillion (from Rp1.4-1.6 trillion); 9M25 net loss narrowed to Rp997.97 billion from Rp4.54 trillion; analysts upgraded to "Buy"
-- Sentiment: Very Bullish
-
-### PT Bumi Resources Tbk (BUMI)
-- Price movement: Declining trend
-- Key catalyst: Revenue up 11.9% YoY to US$1.037 billion but laba bersih collapsed 76.1% to US$29.4 million from US$122.9 million due to coal price pressure
-- Sentiment: Bearish
-
-### PT Bumi Resources Minerals Tbk (BRMS)
-- Price movement: +2.79% to Rp920
-- Key catalyst: Foreign net buy Rp152.26 billion weekly
-- Sentiment: Bullish
-
-### PT Citra Marga Nusaphala Persada Tbk (CMNP)
-- Price movement: Positive momentum
-- Key catalyst: UBO Jusuf Hamka borong 280 million shares (Rp280 million transaction) on Oct 30, increasing stake from 8.90% to 12.75%; Q3 2025 profit down 19.79% YoY to Rp723.46 billion but revenue up 24.99% YoY
-- Sentiment: Bullish (insider buying signal)
-
-### PT Chandra Asri Pacific Tbk (TPIA)
-- Price movement: Stable
-- Key catalyst: Announced interim dividend of Rp3.8 per share (cum date Nov 10, payment Nov 28); H1 2025 laba soared 3,617.9% YoY to US$1.62 billion driven by bargain purchase accounting gain
-- Sentiment: Bullish
-
-### PT Dian Swastatika Sentosa Tbk (DSSA)
-- Price movement: +6.14% to Rp86,400
-- Key catalyst: Contributed 19.25 index points to IHSG; strong technical momentum
-- Sentiment: Bullish
-
-### PT HM Sampoerna Tbk (HMSP)
-- Price movement: +6.10% to Rp870
-- Key catalyst: Strong single-day rally
-- Sentiment: Bullish
-
-### PT Astra International Tbk (ASII)
-- Price movement: -3.09% to Rp6,275
-- Key catalyst: Foreign net buy Rp40.60 billion despite price weakness; technical correction
-- Sentiment: Neutral
-
-### PT Bumi Serpong Damai Tbk (BSDE)
-- Price movement: Declining
-- Key catalyst: Q3 2025 laba bersih turun 49% to Rp1.36 trillion; revenue down 13% to Rp8.76 trillion; presales reached Rp7.10 trillion (71% of 2025 target)
-- Sentiment: Neutral (weak current results but strong presales pipeline)
-
-### PT Tower Bersama Infrastructure Tbk (TBIG)
-- Price movement: Stable
-- Key catalyst: Sold 350 million treasury shares to controlling shareholder at Rp2,138/share (total Rp749.01 billion); announced Rp360 billion buyback program for up to 158 million shares
-- Sentiment: Neutral to Bullish
-
-## Top 3 Actionable Recommendations
-
-1. **BUY: PT Bank Mandiri (Persero) Tbk (BMRI) - Target: Rp5,200**
-   - Rationale: Massive foreign inflow (Rp649 billion in single day) signals institutional confidence. Banking sector positioned to benefit from expected rate cuts in H1 2026. Window dressing momentum should support blue-chip banks through year-end. Technical setup shows breakout potential above resistance.
-
-2. **BUY: PT GoTo Gojek Tokopedia Tbk (GOTO) - Target: Rp75-80**
-   - Rationale: Historic turnaround to profitability with adjusted pre-tax profit in Q3 2025. Management raised full-year guidance significantly (Rp1.8-1.9T vs Rp1.4-1.6T). Multiple brokerages upgraded to "Buy" with target prices of Rp70-100. Strong operational leverage as losses narrow while gross profit expands 24.5% YoY.
-
-3. **ACCUMULATE: PT Bank Negara Indonesia (Persero) Tbk (BBNI) - Target: Rp5,800-6,000**
-   - Rationale: Best-in-class efficiency metrics (CIR 46.1% vs peers at 48-49%) provide profitability cushion. DPK surging 21.4% YoY demonstrates strong franchise. Trading at below historical average valuation. CGS International highlights as fastest rebound candidate among big banks. Credit growth solid at 10.5% YoY with improving asset quality.
-
-## Sector Analysis
-
-**Banking (Weight: Overweight)**
-- Performance: Mixed with selective strength in BMRI (+3.23%), BBRI (+1.79%) vs weakness in BBCA (-0.87%)
-- Key themes: Foreign accumulation despite mixed Q3 results; efficiency improvements (BBNI CIR 46.1%); turnaround stories (BBKP from loss to profit); digital banks gaining traction (BBHI profit +25.54%)
-- Outlook: Positive on window dressing expectations, potential rate cuts in 2026, and attractive valuations
-
-**Telecommunications (Weight: Neutral)**
-- Performance: TLKM down 1.23% despite foreign buying
-- Key themes: TLKM Q3 results disappointing (profit -10.69%, revenue -2.31%); heavy operating expenses weighing on margins
-- Outlook: Cautious - waiting for clearer signs of revenue stabilization
-
-**Technology (Weight: Overweight)**
-- Performance: Sector up 1.87% (best performing sector Oct 30); GOTO surged 7.14%
-- Key themes: GOTO's profitability milestone; raised guidance signals sustainable improvement
-- Outlook: Very positive - technology disruption and efficiency gains driving results
-
-**Mining & Energy (Weight: Neutral to Underweight)**
-- Performance: Mixed - BUMI profit collapsed 76.1% despite 11.9% revenue growth; BRMS gained on speculation
-- Key themes: Coal price pressure eroding margins despite volume resilience; ADRO facing selling pressure
-- Outlook: Cautious - commodity price headwinds persist
-
-**Property & Real Estate (Weight: Underweight)**
-- Performance: BSDE profit down 49%, revenue down 13%
-- Key themes: Sector slowdown continues; presales holding up better than recognized revenue
-- Outlook: Selective - focus on developers with strong presales conversion potential
-
-**Consumer Goods (Weight: Neutral)**
-- Performance: Mixed - HMSP +6.10%, GGRM +11.61% vs MYOR -4.91%
-- Key themes: Defensive rotation into tobacco stocks; selective strength in established brands
-- Outlook: Neutral - window dressing may favor blue chips
-
-**Infrastructure (Weight: Neutral)**
-- Performance: CMNP facing profit pressure but insider buying emerged
-- Key themes: Toll road traffic recovery; META (Grup Salim) EBITDA stable at Rp58.8 billion
-- Outlook: Neutral - steady cash flows attractive but limited growth catalysts
-
-## Key Themes and Trends
-
-**1. Window Dressing Expectations Driving Year-End Positioning**
-- Fund managers rotating into fundamentally strong blue chips ahead of December
-- Analysts expect effectiveness depends on global market stability
-- Historical pattern suggests selective strength in large-cap banking, consumer defensive, and telecommunications
-- 2025 window dressing impact projected to be smaller than 2024 due to more cautious institutional positioning
-
-**2. MSCI Rebalancing and Free Float Revisions Creating Volatility**
-- MSCI implementing new free float methodology affecting index weights
-- Rebalancing of LQ45, IDX30, IDX80 indices triggering mechanical buying/selling
-- Foreign flows concentrated in index constituents (BBCA, BMRI, BBRI, TLKM)
-- Short-term volatility expected but creates entry opportunities in quality names
-
-**3. Diverging Corporate Earnings Quality**
-- Winners: GOTO (turnaround), BBKP (from loss to profit), TPIA (extraordinary gains), BBHI (+25.54%)
-- Strugglers: TLKM (-10.69%), BUMI (-76.1%), BSDE (-49%)
-- Trend: Efficiency and operational discipline separating winners from losers
-- Q3 earnings season revealing which companies adapting successfully to high-rate environment
-
-**4. Banking Sector Consolidation as Top Investment Theme**
-- Massive foreign accumulation (BBCA Rp1.61T, BMRI Rp649B weekly)
-- Valuations attractive vs historical averages
-- Net interest margin (NIM) resilience key differentiator
-- Digital transformation driving efficiency gains (BBNI CIR 46.1%, BBHI digital growth)
-
-**5. Federal Reserve Policy Uncertainty Weighing on Risk Appetite**
-- Powell indicated December rate cut "not certain" after 25bps cut
-- Market probability of December cut fell to 70% from 90%
-- Wall Street declined on hawkish Fed tone and Big Tech capex concerns
-- Impact on Indonesia: Limits rupiah strength, but domestic fundamentals remain supportive
-
-**6. Commodity Price Pressure Challenging Mining Sector**
-- Coal prices declining affecting BUMI (profit -76.1% despite revenue +11.9%)
-- CPO prices fell 4.89% weekly, down 4.15% in October (two consecutive months of decline)
-- Oil prices down 3 consecutive months (Brent -2.9%, WTI -2.2% in October)
-- Gold up 3.74% in October but down 2.71% weekly on strong USD
-
-## Individual Article Insights
-
-**AIMS (Right Issue Progress)** - Sentiment: Neutral
-- Entering Due Diligence and Legal Drafting phase for rights issue; transforming into investment holding company
-
-**KB Bank (BBKP Turnaround)** - Sentiment: Bullish
-- Remarkable turnaround from Rp2.73T loss to Rp265B profit; credit growth 10.83%, CASA exploded 38.02% YoY
-
-**Telkom (TLKM Disappointing)** - Sentiment: Bearish
-- Profit down 10.69% to Rp15.78T, revenue down 2.31% to Rp109.61T; high operating costs burden
-
-**Bumi Resources (BUMI Margin Compression)** - Sentiment: Bearish
-- Revenue up 11.9% but profit crashed 76.1% due to coal price weakness; operational efficiency noted but insufficient
-
-**IHSG Weekly Losers** - Sentiment: Negative
-- BULL (-35.88%), IDPR (-28.26%), LPLI (-28%), UANG (-26.92%) led declines
-
-**IHSG Weekly Gainers** - Sentiment: Positive
-- SSTM (+95.31%), PURI (+50.65%), INOV (+50%), KDTN (+44.6%) topped gainers
-
-**CMNP Insider Buying** - Sentiment: Bullish
-- Jusuf Hamka bought 280M shares raising stake to 12.75%; signals confidence despite profit down 19.79%
-
-**Window Dressing Outlook** - Sentiment: Cautiously Bullish
-- Expected to support IHSG through year-end; focus on blue chips with attractive valuations
-
-**IHSG Year-End Forecast** - Sentiment: Moderately Bullish
-- Analysts expect positive moderate movement to year-end; supported by macro stability, low inflation, trade surplus, potential rate cuts
-
-**BNI (BBNI Rebound Case)** - Sentiment: Bullish
-- CGS International highlights best CIR (46.1%), strong DPK growth (21.4%), fastest rebound potential among big banks
-
-**GOTO Profitability Milestone** - Sentiment: Very Bullish
-- First-ever adjusted pre-tax profit Rp62B; guidance raised to Rp1.8-1.9T; analysts recommend "Buy" with TP Rp70-100
-
-**BEI IPO Pipeline** - Sentiment: Positive
-- 3 lighthouse IPOs in pipeline (banking, infrastructure, mining sectors); maintains quality focus over quantity
-
-**52 Emiten Suspended** - Sentiment: Negative
-- BEI suspended 52 companies for failing to submit H1 2025 financials; Rp150M fines imposed
-
-**Wall Street Weakness** - Sentiment: Negative
-- S&P 500 -0.99%, Nasdaq -1.57% on Big Tech capex concerns and Fed hawkishness
-
-**Allo Bank (BBHI) Buyback** - Sentiment: Bullish
-- Rp119B buyback announced; profit up 25.54% YoY, LDR improved dramatically to 96.57%
-
-**Foreign Net Buy Focus** - Sentiment: Bullish
-- Asing focused on BMRI, BBCA, GOTO, MDKA, JPFA, TLKM, UNTR, ASII showing conviction in quality names
-
-**Foreign Net Sell** - Sentiment: Mixed
-- Profit-taking in ANTM, BBNI, BRMS, ARCI, NCKL, ADRO, RAJA, ICBP
-
-**TPIA Dividend** - Sentiment: Bullish
-- Rp3.8/share interim dividend; H1 profit soared 3,617.9% YoY to US$1.62B on bargain purchase gains
-
-**MLPT Dividend** - Sentiment: Neutral
-- Rp53.5/share dividend (0.06% yield); profit down 18.16% but revenue up 10.01%
-
-**BSDE Weak Results** - Sentiment: Bearish
-- Profit down 49% to Rp1.36T, revenue down 13%; presales strong at 71% of target provides future visibility
-
-**Bumi Resources (BUMI) Details** - Sentiment: Bearish
-- Profit down 76.1% to US$29.4M despite revenue +11.9%; coal production challenges
-
-**Astra Agro (AALI) Digitalization** - Sentiment: Neutral
-- Investing in PIMS digital system for plantation management; focusing on sustainability
-
-**CPO Price Decline** - Sentiment: Negative
-- CPO down 4.89% weekly, down 4.15% in October; two consecutive months of decline
-
-**Oil Price Weakness** - Sentiment: Negative
-- Brent -0.52% weekly, WTI -0.78% weekly; third consecutive monthly decline
-
-**Gold Price Mixed** - Sentiment: Mixed
-- Down 2.71% weekly but up 3.74% in October (third consecutive monthly gain)
-
-**Top Losers Weekly** - Sentiment: Negative
-- BULL (-35.88%), IDPR (-28.26%), LPLI (-28%), UANG (-26.92%), TOBA showing severe weakness
-
-**Foreign Accumulation Weekly** - Sentiment: Bullish
-- BBCA (Rp1.61T), BREN (Rp286B), TLKM (Rp199B), BMRI (Rp139B), MDKA (Rp186B) heavily accumulated
-
-## Risk Factors
-
-1. **Federal Reserve Policy Uncertainty**: December rate cut probability declining to 70%; stronger-for-longer rates could pressure emerging market flows
-
-2. **US-China Trade Tensions**: Ongoing geopolitical concerns creating volatility in global markets; Trump administration tariff threats
-
-3. **Big Tech Capex Concerns**: Wall Street selloff driven by excessive AI spending worries (Meta, Microsoft); could spill over to tech sector globally
-
-4. **Commodity Price Weakness**: Coal, CPO, oil all declining; pressuring resource-heavy Indonesian market
-
-5. **MSCI Free Float Changes**: Mechanical selling pressure on stocks with reduced free float weighting; short-term volatility expected
-
-6. **Weak Corporate Earnings**: High-profile disappointments (TLKM, BUMI, BSDE) raising concerns about H2 2025 earnings trajectory
-
-7. **Property Sector Slowdown**: BSDE results highlight continued weakness in real estate recognition despite presales holding up
-
-8. **Regulatory Enforcement**: 52 emiten suspended for non-compliance; heightened regulatory scrutiny creating uncertainty
-
-9. **Currency Volatility**: Rupiah weakness vs USD limiting foreign appetite despite positive net buying
-
-10. **Window Dressing Uncertainty**: Effectiveness may be limited compared to 2024; institutional caution could dampen year-end rally
+# Daily Financial Market Report
+**Date:** November 2, 2025
+**Period Covered:** October 27 - November 1, 2025
 
 ---
 
-**Report generated on November 2, 2025**
+## Executive Summary
 
-*This report is based on analysis of 43 financial news articles covering the period October 30-November 1, 2025. All data, figures, and recommendations are derived strictly from publicly available information in the news sources analyzed.*
+Indonesian markets showed mixed performance with IHSG declining 1.3% to 8,163.88 amid Q3 earnings season volatility. Market capitalization contracted 2.48% to Rp14.857 trillion, though foreign investors recorded net buying of Rp1.13 trillion on week-end. Key themes include commodity price pressure on mining stocks, banking sector resilience, and technology sector turnaround with GOTO's first-ever adjusted profit. US markets remained cautious as AI capital expenditure concerns and hawkish Fed commentary dampened sentiment.
+
+---
+
+## Market Overview
+
+### Indonesian Equity Market (IHSG)
+- **Week Performance:** -1.3% (8,163.88)
+- **Market Cap:** Rp14.857 trillion (-2.48% WoW)
+- **Daily Transaction Average:** Rp22.63 trillion (+1.55% WoW)
+- **Foreign Flow:** Net buy Rp1.13 trillion (week-end)
+- **YTD Performance:** +15.31%
+
+**Technical Outlook:**
+Analysts project IHSG trading range of 8,000-8,280 for upcoming week, with resistance at 8,268-8,354. Window dressing activity expected in December could provide upside support, though effectiveness depends on global market conditions. MSCI free float methodology changes and index rebalancing (LQ45, IDX30, IDX80) creating tactical volatility.
+
+### Sector Performance
+**Top Gainers:**
+- Technology: +1.87%
+- Energy: +2.31%
+- Consumer Non-Cyclical: +1.89%
+
+**Laggards:**
+- Transportation: -0.88%
+- Basic Materials: Pressure from coal/copper price weakness
+
+### US Markets Snapshot
+- **S&P 500:** -0.99% to 6,822.16
+- **Nasdaq:** -1.57% to 23,581.14
+- **Dow Jones:** -0.24% to 47,518.62
+
+Key headwinds: Meta and Microsoft disappointing on AI capex outlook, Fed's hawkish tone reducing December rate cut probability from 90% to 70%.
+
+---
+
+## Most Mentioned Stocks Analysis
+
+### 1. BUMI - PT Bumi Resources Tbk
+**Price Catalyst:** Q3 earnings miss
+**Performance:** Net profit attributable to parent -76.1% YoY to USD29.4 million despite revenue +11.9% to USD1.04 billion
+
+**Key Drivers:**
+- Coal production declined 4% to 54.9 million tons
+- Average selling price (FOB) dropped 18% to USD60.4/ton from USD73.7/ton
+- Operating profit surged 231.9% to USD84.4 million via cost efficiency
+- Operating margin stable at 5.5% vs 5.8% prior year
+
+**Sentiment:** Neutral to Negative - Revenue growth offset by margin compression from commodity price weakness
+
+---
+
+### 2. AMMN/AMNT - PT Amman Mineral Internasional Tbk
+**Price Catalyst:** Export permit approval and smelter shutdown
+**Performance:** Received recommendation for 480,000 dmt copper concentrate export (valid 6 months through April 2026)
+
+**Key Drivers:**
+- Flash Converting Furnace and Sulfuric Acid Plant repairs required temporary shutdown July-August 2025
+- Repairs expected to continue through H1 2026
+- Export permit enables clearing warehouse inventory accumulation
+- Production target: 430,000 dmt copper concentrate for 9M 2025
+
+**Sentiment:** Positive - Export permit provides operational relief and revenue continuity during maintenance period
+
+---
+
+### 3. GOTO - PT GoTo Gojek Tokopedia Tbk
+**Price Catalyst:** First-ever adjusted pre-tax profit
+**Performance:** +7.14% to Rp60; Adjusted EBITDA guidance raised to Rp1.8-1.9 trillion from Rp1.4-1.6 trillion
+
+**Key Drivers:**
+- Q3 2025: First adjusted pre-tax profit of Rp62 billion
+- Net loss narrowed to Rp997.97 billion (9M25) vs Rp4.54 trillion (9M24) - 78% improvement
+- Gross profit: Rp7.66 trillion vs Rp6.15 trillion (+24.5% YoY)
+- Revenue: Rp13.30 trillion (+14% YoY)
+- 9M25 adjusted EBITDA Rp1.34 trillion = 81% of full-year target
+
+**Analyst Ratings:** Buy consensus (BRI Danareksa, Panin, IndoPremier)
+**Sentiment:** Highly Positive - Operational turnaround validates cost discipline and strategic focus
+
+---
+
+### 4. BMRI - PT Bank Mandiri (Persero) Tbk
+**Price Catalyst:** Window dressing and foreign accumulation
+**Performance:** +3.23% to Rp4,800; Net foreign buy Rp649.25 billion (largest inflow)
+
+**Key Drivers:**
+- Blue-chip banking rotation ahead of year-end
+- Strong liquidity positioning
+- Beneficiary of institutional rebalancing activities
+
+**Sentiment:** Positive - Technical momentum supported by fund flows
+
+---
+
+### 5. BBNI - PT Bank Negara Indonesia (Persero) Tbk
+**Price Catalyst:** Q3 operational efficiency
+**Performance:** Q3 net profit Rp15.1 trillion (-7.3% YoY) = 73.5% of analyst full-year target
+
+**Key Drivers:**
+- Best-in-class CIR at 46.1% vs peer average 48-49%
+- Loan growth: 10.5% YoY to Rp812.19 trillion
+- DPK growth: 21.4% YoY to Rp934.3 trillion
+- Non-interest income: +12.4% YoY to Rp17.2 trillion (diversification success)
+
+**Analyst View:** CGS International maintains Buy rating on efficiency edge
+**Sentiment:** Positive - Operational excellence amid NIM pressure environment
+
+---
+
+### 6. CMNP - PT Citra Marga Nusaphala Persada Tbk
+**Price Catalyst:** Insider buying
+**Performance:** Ultimate beneficiary Jusuf Hamka purchased 280 million shares on Oct 30, 2025
+
+**Key Drivers:**
+- Post-transaction ownership: 845.01 million shares (12.75%) vs prior 8.90%
+- Q3 profit attributable: Rp723.46 billion (-19.79% YoY)
+- Revenue: Rp3.40 trillion (+24.99% YoY)
+- COGS increase 58.05% YoY pressured gross margin
+
+**Sentiment:** Positive insider signal despite margin pressure
+
+---
+
+### 7. TPIA - PT Chandra Asri Pacific Tbk
+**Price Catalyst:** Interim dividend declaration
+**Performance:** Rp3.84/share dividend (Rp330 billion total); Cum date Nov 6, payment Nov 28
+
+**Key Drivers:**
+- H1 2025 net profit USD1.62 billion (3,617.9% YoY) driven by negative goodwill from Aster Chemicals acquisition
+- One-time accounting gain from bargain purchase
+
+**Sentiment:** Neutral - Dividend positive but profit driven by non-recurring item
+
+---
+
+### 8. BBHI - Allo Bank Indonesia
+**Price Catalyst:** Share buyback announcement
+**Performance:** Rp119 billion buyback (Oct 30, 2025 - Jan 29, 2026) from Rp168 billion allocation
+
+**Key Drivers:**
+- Q3 net profit: Rp379.88 billion (+25.54% YoY)
+- Interest income: Rp1.35 trillion (+24.42% YoY)
+- Loan growth: 15.58% to Rp8.48 trillion
+- DPK surge: 78.15% to Rp8.78 trillion (deposit-driven)
+- LDR improved from 148.85% to 96.57%
+- NIM at 10.43% (stable)
+
+**Sentiment:** Positive - Strong digital bank growth profile; buyback signals management confidence
+
+---
+
+### 9. BSDE - PT Bumi Serpong Damai Tbk
+**Price Catalyst:** Q3 earnings report
+**Performance:** Net profit Rp1.36 trillion (-49% YoY); Revenue Rp8.76 trillion (-13% YoY)
+
+**Key Drivers:**
+- Pre-sales Rp7.10 trillion (71% of 2025 target) - to be recognized as future revenue
+- Management optimistic on deferred revenue conversion
+
+**Sentiment:** Cautious - Near-term pressure but pipeline provides forward visibility
+
+---
+
+### 10. ASII - PT Astra International Tbk
+**Price Catalyst:** Profit-taking
+**Performance:** -3.09% to Rp6,275; Foreign net buy Rp40.60 billion (selective accumulation)
+
+**Sentiment:** Mixed - Correction met with foreign buying at lower levels
+
+---
+
+## Top 3 Actionable Recommendations
+
+### 1. BUY: GOTO (PT GoTo Gojek Tokopedia Tbk) - Target: Rp70-75
+**Rationale:**
+First adjusted pre-tax profit marks inflection point in profitability trajectory. Raised FY25 EBITDA guidance (Rp1.8-1.9T) demonstrates accelerating operational leverage. Net loss reduction of 78% YoY validates platform economics improvement. Consensus analyst Buy ratings with multiple target price upgrades pending.
+
+**Entry:** Rp58-62
+**Catalyst Timeline:** Q4 results (Jan 2026) could show sustained profitability
+**Risk:** Tech sector volatility, competition intensity
+
+---
+
+### 2. ACCUMULATE: BBNI (PT Bank Negara Indonesia) - Target: Rp4,200-4,400
+**Rationale:**
+Superior cost efficiency (CIR 46.1%) provides earnings resilience in compressed NIM environment. Strong DPK growth (+21.4%) and non-interest income diversification (+12.4%) offset net interest margin headwinds. Valuations attractive versus peer group despite operational outperformance. Window dressing flows provide technical support.
+
+**Entry:** Rp3,800-3,950
+**Catalyst Timeline:** Q4 loan growth momentum, potential rate cuts 2026
+**Risk:** Systemic credit quality deterioration, slower economic growth
+
+---
+
+### 3. SELECTIVE BUY: AMMN (PT Amman Mineral Internasional) - Speculative
+**Rationale:**
+480,000 dmt export permit (valid through April 2026) removes inventory overhang risk and ensures cash flow continuity during smelter repairs. Once maintenance completes (H1 2026), combined smelter-export operations could drive earnings recovery. Copper price outlook remains constructive on energy transition demand.
+
+**Entry:** On price weakness below recent levels
+**Catalyst Timeline:** Smelter repair completion H1 2026, copper price recovery
+**Risk:** Extended repair timeline, commodity price volatility, regulatory changes
+
+---
+
+## Key Article Insights by Sentiment
+
+### Highly Positive
+- **GOTO achieves first adjusted pre-tax profit (Rp62B)** - Validates multi-year turnaround strategy; guidance upgrade to Rp1.8-1.9T EBITDA signals confidence
+- **AMMN receives 480,000 ton copper export permit** - Critical for operational continuity; 6-month validity through April 2026 provides revenue bridge
+- **Foreign investors net buy Rp1.13 trillion week-end** - Risk-on sentiment returning selectively; big-cap rotation visible
+
+### Positive
+- **Window dressing expected to support IHSG into year-end** - Seasonal pattern favors blue-chips; fund managers historically rotate to large-cap names
+- **BBNI demonstrates best-in-class efficiency (CIR 46.1%)** - Sustainable competitive advantage in margin-compressed environment
+- **BBHI strong digital banking growth (LDR improved to 96.57%)** - Deposit mobilization success; buyback at 25.5% profit growth attractive
+
+### Neutral
+- **IHSG technical range 8,000-8,280 projected** - Consolidation phase; directionality depends on global risk sentiment
+- **BEI targets 50 IPOs in 2026 (including 6 Lighthouse deals)** - Quality over quantity focus; market depth improvement gradual
+- **Warren Buffett's Berkshire Hathaway cash hits USD381.7B** - Conservative positioning pre-succession; market cautiousness indicator
+
+### Negative
+- **BUMI profit crashes 76% despite revenue growth** - Coal price weakness (USD60.4/ton, -18% YoY) overwhelms volume; margin sustainability questioned
+- **52 emiten sanctioned for missing H1 2025 financial reports** - Governance concerns; Rp150M fines and suspension risk for chronic non-compliance
+- **US tech sector pressure on AI capex concerns** - Meta/Microsoft warnings on capital intensity; profitability timeline uncertainty
+
+### Highly Negative
+- **Wall Street down on AI spending anxiety and hawkish Fed** - S&P 500 -0.99%, Nasdaq -1.57%; December rate cut probability dropped 90% to 70%
+- **CPO prices fall 4.89% weekly to MYR4,205/ton** - Second consecutive monthly decline; plantation sector earnings headwind
+
+---
+
+## Macro & Policy Developments
+
+### Domestic
+- **MSCI Free Float Methodology Revision:** Creating index rebalancing volatility; potential outflows from affected stocks
+- **BEI Selectivity on IPO Quality:** 2026 target 50 IPOs (down from original 66 in 2025) prioritizes Lighthouse companies (>Rp3T market cap)
+- **Coal & Commodity Weakness:** Bumi Resources, Aneka Tambang facing price headwinds; operational efficiency critical
+
+### International
+- **Fed Policy Stance:** Quarter-point cut delivered but Powell's hawkish commentary reduced December cut odds; data-dependent approach maintained
+- **China-US Trade Tensions:** Markets remain cautious despite recent Trump-Xi dialogue; tariff risks persist
+- **Crude Palm Oil Weakness:** Dalian market pressure dragging Malaysian palm prices; plantation sector margins compressed
+
+---
+
+## Risk Factors to Monitor
+
+1. **Global Growth Slowdown:** Weak China data could pressure commodity-linked Indonesian exports
+2. **Rupiah Volatility:** Currency weakness persisting despite positive equity flows
+3. **Corporate Governance Issues:** 52 emiten non-compliance with financial reporting highlights oversight gaps
+4. **AI Investment Sustainability:** US tech capex concerns could trigger broader risk-off rotation
+5. **Geopolitical Uncertainty:** Trade policy unpredictability ahead of global political transitions
+
+---
+
+## Conclusion
+
+Indonesian markets navigate Q3 earnings season with selective opportunities emerging. Technology sector's profitability inflection (GOTO) and banking sector operational resilience (BBNI) contrast with commodity sector headwinds (BUMI, CPO producers). Foreign investor appetite remains selective but positive (Rp1.13T net buy), targeting quality large-caps with defensive characteristics.
+
+Window dressing seasonality into year-end provides tactical upside potential for blue-chip portfolios, though execution depends on global risk sentiment stabilization. MSCI rebalancing and free float changes introduce near-term volatility requiring active position management.
+
+Key focus areas: Monitor GOTO's Q4 profitability sustainability, banking sector NIM trends amid potential 2026 rate cuts, and commodity price trajectories affecting resource stocks. Maintain disciplined approach emphasizing earnings quality, operational efficiency, and balance sheet strength in current environment.
+
+---
+
+**Disclaimer:** This report is for informational purposes only and does not constitute investment advice. All investment decisions carry risk. Conduct independent research and consult licensed financial advisors before making investment decisions.

@@ -20,6 +20,17 @@ else
     log "Already in conda environment 'ml'"
 fi
 
+log "Running Claude Code analysis"
+log "=== ENVIRONMENT DEBUG ==="
+log "PATH: $PATH"
+log "HOME: $HOME"
+log "PWD: $(pwd)"
+log "USER: $USER"
+log "SHELL: $SHELL"
+log "Claude location: $(which claude 2>&1)"
+log "Claude version: $(claude --version 2>&1)"
+log "========================"
+
 # Step 1 & 2: Prepare news
 log "Running news preparation"
 rm -f news.txt
@@ -28,7 +39,8 @@ bash prepare_news.sh
 
 # Step 3: Run analysis
 log "Running Claude Code analysis"
-cat analysis_prompt.txt | claude -p --dangerously-skip-permissions
+
+timeout 30m cat analysis_prompt.txt | claude -p --dangerously-skip-permissions
 
 log "Analysis complete"
 log "Daily report generated at: daily_report.md"

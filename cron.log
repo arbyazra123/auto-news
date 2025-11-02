@@ -1,44 +1,21 @@
 
-[2025-11-01 22:00:01] Starting daily stock analysis automation
-[2025-11-01 22:00:01] Activating conda environment 'ml'
-[2025-11-01 22:00:03] Running news preparation
-bash: prepare_news.sh: No such file or directory
-[2025-11-02 07:00:01] Starting daily stock analysis automation
-[2025-11-02 07:00:01] Activating conda environment 'ml'
-[2025-11-02 07:00:03] Running news preparation
-🔍 Step 1: Scraping news...
-🔎 Crawling https://wartaekonomi.co.id/category-283/bursa
-🔎 Crawling https://market.bisnis.com/bursa-saham
-🔎 Crawling https://www.cnbcindonesia.com/tag/saham
-🔎 Crawling https://www.idxchannel.com/market-news
-✅ Total collected: 44
-
-📝 Step 2: Preprocessing for Claude...
-📰 Financial News Preprocessor for Claude Pro
-
-📄 Parsing articles from news.txt...
-   Found 43 articles
-
-📊 Size Analysis:
-   Original: 119,003 characters
-   Condensed: 70,885 characters
-   Reduction: 40.4%
-
-🔧 Creating Claude Pro-optimized files...
-
-✅ Created condensed file: news_condensed.txt
-✅ Created ready-to-paste prompt: claude_pro_prompt.txt
-   Copy this file's contents and paste directly into Claude Pro!
-
-============================================================
-✅ READY TO USE WITH CLAUDE PRO!
-============================================================
-
-Option A: Upload 'news_condensed.txt' to Claude Pro
-Option B: Copy-paste 'claude_pro_prompt.txt' directly
-
-Both options will give you complete analysis in 1 message!
-
-✅ News preparation complete!
-[2025-11-02 07:04:35] Running Claude Code analysis
+[2025-11-02 12:00:01] Starting daily stock analysis automation
+[2025-11-02 12:00:01] Activating conda environment 'ml'
+[2025-11-02 12:00:03] Running news preparation
+[2025-11-02 12:00:03] Scraping news...
+[2025-11-02 12:00:03] Crawling https://wartaekonomi.co.id/category-283/bursa
+[2025-11-02 12:00:31] Crawling https://market.bisnis.com/bursa-saham
+[2025-11-02 12:02:03] Crawling https://www.cnbcindonesia.com/tag/saham
+[2025-11-02 12:03:03] Crawling https://www.idxchannel.com/market-news
+[2025-11-02 12:04:29] Collected 44 news
+[2025-11-02 12:04:29] Preprocessing for Claude...
+[2025-11-02 12:04:29] Parsing articles from news.txt...
+[2025-11-02 12:04:29] Found 43 articles
+[2025-11-02 12:04:31] Size detail: Original (122,551, Condensed: (71,551), Reduction: (41.6)
+[2025-11-02 12:04:31] Creating files...
+[2025-11-02 12:04:34] Created condensed file: news_condensed.txt
+[2025-11-02 12:04:36] Created ready-to-paste prompt: claude_pro_prompt.txt
+[2025-11-02 12:04:36] Successfully created news_condensed.txt
+[2025-11-02 12:04:36] News preparation complete!
+[2025-11-02 12:04:36] Running Claude Code analysis
 Request timed out
