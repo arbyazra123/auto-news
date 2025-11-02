@@ -15,7 +15,7 @@ The report should include:
 - Market overview section
 - Most mentioned stocks with analysis
 - Top 3 actionable recommendations
-- Individual article insights with sentiment
+- Honorable article insights with sentiment
 - Be concise and data-focused
 
 After writing the report, confirm it was created successfully.

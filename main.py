@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from datetime import datetime, date
 
+def log(message: str):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    formatted = f"[{timestamp}] {message}"
+    print(formatted)
 
 headers = {
     "User-Agent": (
@@ -52,20 +56,20 @@ def scrape_site(config, max_pages=3, max_item=15):
 
     while url and pages_crawled < max_pages:
         pages_crawled += 1
-        print(f"🔎 Crawling {url}")
+        log(f"Crawling {url}")
 
         try:
             resp = requests.get(url, headers=headers, timeout=15)
             resp.raise_for_status()
             soup = BeautifulSoup(resp.text, "html.parser")
         except Exception as e:
-            print(f"⚠️ Failed to fetch {url}: {e}")
+            log(f"⚠️ Failed to fetch {url}: {e}")
             break
 
         soup = BeautifulSoup(resp.text, "html.parser")
         items = soup.select(config["item_tag"])
         if not items:
-            print(f"❌ No items found on {url}")
+            log(f"❌ No items found on {url}")
             break
 
         # today_str = date.today().strftime("%Y-%m-%d")  # YYYY-MM-DD
@@ -139,5 +143,5 @@ if __name__ == "__main__":
     all_results = []
     for site in get_sites():
         all_results.extend(scrape_site(site, max_pages=2))
-    print(f"✅ Total collected: {len(all_results)}")
     save_to_txt(all_results)
+    log(f"Collected {len(all_results)} news")

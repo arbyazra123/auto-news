@@ -1,7 +1,13 @@
 import re
 import json
+from datetime import datetime
 
 max_chars = 2000
+
+def log(message: str):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    formatted = f"[{timestamp}] {message}"
+    print(formatted)
 
 def parse_articles(file_path):
     """Parse articles from news.txt"""
@@ -80,7 +86,7 @@ def create_condensed_file(articles, output_file="news_condensed.txt"):
             f.write(f"**Content:** {condensed_content}\n")
             f.write("\n" + "-"*60 + "\n\n")
     
-    print(f"✅ Created condensed file: {output_file}")
+    log(f"Created condensed file: {output_file}")
 
 
 def create_structured_prompt(articles, output_file="claude_pro_prompt.txt"):
@@ -117,20 +123,18 @@ def create_structured_prompt(articles, output_file="claude_pro_prompt.txt"):
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(prompt)
     
-    print(f"✅ Created ready-to-paste prompt: {output_file}")
-    print(f"   Copy this file's contents and paste directly into Claude Pro!")
+    log(f"Created ready-to-paste prompt: {output_file}")
 
 
 def main():
-    print("📰 Financial News Preprocessor for Claude Pro\n")
     
     # Parse original articles
-    print("📄 Parsing articles from news.txt...")
+    log("Parsing articles from news.txt...")
     articles = parse_articles("news.txt")
-    print(f"   Found {len(articles)} articles\n")
+    log(f"Found {len(articles)} articles")
     
     if not articles:
-        print("❌ No articles found in news.txt!")
+        log("No articles found in news.txt!")
         return
     
     # Calculate size reduction
@@ -138,22 +142,24 @@ def main():
     condensed_size = sum(len(extract_key_content(a['content'], max_chars)) for a in articles)
     reduction = ((original_size - condensed_size) / original_size) * 100
     
-    print(f"📊 Size Analysis:")
-    print(f"   Original: {original_size:,} characters")
-    print(f"   Condensed: {condensed_size:,} characters")
-    print(f"   Reduction: {reduction:.1f}%\n")
+    #print(f"📊 Size Analysis:")
+    #print(f"   Original: {original_size:,} characters")
+    #print(f"   Condensed: {condensed_size:,} characters")
+    #print(f"   Reduction: {reduction:.1f}%\n")
+    log(f"Size detail: Original ({original_size:,}, Condensed: ({condensed_size:,}), Reduction: ({reduction:.1f})")
     
     # Create outputs
-    print("🔧 Creating Claude Pro-optimized files...\n")
+    log("Creating files...")
     create_condensed_file(articles)
     create_structured_prompt(articles)
     
-    print("\n" + "="*60)
-    print("✅ READY TO USE WITH CLAUDE PRO!")
-    print("="*60)
-    print("\nOption A: Upload 'news_condensed.txt' to Claude Pro")
-    print("Option B: Copy-paste 'claude_pro_prompt.txt' directly")
-    print("\nBoth options will give you complete analysis in 1 message!")
+    log("Successfully created news_condensed.txt")
+    #print("\n" + "="*60)
+    #print("✅ READY TO USE WITH CLAUDE PRO!")
+    #print("="*60)
+    #print("\nOption A: Upload 'news_condensed.txt' to Claude Pro")
+    #print("Option B: Copy-paste 'claude_pro_prompt.txt' directly")
+    #print("\nBoth options will give you complete analysis in 1 message!")
 
 
 if __name__ == "__main__":

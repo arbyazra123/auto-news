@@ -1,12 +1,15 @@
 #!/bin/bash
 # Step 1 & 2: Scrape news and preprocess
 
-echo "🔍 Step 1: Scraping news..."
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
+
+log "Scraping news..."
+
 python3 main.py
 
-echo ""
-echo "📝 Step 2: Preprocessing for Claude..."
+log "Preprocessing for Claude..."
 python3 claude_preprocess.py
 
-echo ""
-echo "✅ News preparation complete!"
+log "News preparation complete!"

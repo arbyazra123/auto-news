@@ -3,6 +3,8 @@
 
 set -e  # Exit on error
 
+cd /home/arboapin/ai/daily-stock-summary
+
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
 }
