@@ -3,7 +3,8 @@
 
 set -e  # Exit on error
 
-cd /home/arboapin/ai/daily-stock-summary
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
@@ -11,13 +12,18 @@ log() {
 
 log "Starting daily stock analysis automation"
 
-# Check if already in the 'ml' environment, if not activate it
-if [ "$CONDA_DEFAULT_ENV" != "ml" ]; then
-    log "Activating conda environment 'ml'"
-    source /home/arboapin/miniconda3/etc/profile.d/conda.sh
-    conda activate ml
+# Check if conda is available and activate environment if needed
+if command -v conda &> /dev/null; then
+    if [ "$CONDA_DEFAULT_ENV" != "ml" ]; then
+        log "Activating conda environment 'ml'"
+        # Try to initialize conda (works for most installations)
+        eval "$(conda shell.bash hook)" 2>/dev/null || true
+        conda activate ml 2>/dev/null || log "Warning: Could not activate conda env 'ml', using current Python"
+    else
+        log "Already in conda environment 'ml'"
+    fi
 else
-    log "Already in conda environment 'ml'"
+    log "Conda not found, using current Python environment"
 fi
 
 log "Running Claude Code analysis"

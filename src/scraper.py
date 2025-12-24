@@ -21,41 +21,31 @@ def get_sites():
         {
             "url": "https://wartaekonomi.co.id/category-283/bursa",
             "item_tag": "div.articleListWrapper",
-            "time_tag": "time.text-muted",
-            "pagination_tag": None,
         },
         {
             "url": "https://market.bisnis.com/bursa-saham",
             "item_tag": "div.art--row",
-            "time_tag": "div.detailsAttributeDates",
-            "pagination_tag": "a.btn.page-link.text-dark",
         },
         {
             "url": "https://www.cnbcindonesia.com/tag/saham",
             "item_tag": "div.nhl-list",
-            "time_tag": "div.text-cm",
-            "pagination_tag": None,
         },
         {
-            "url": "https://www.idxchannel.com/market-news",
+            "url": "https://www.idxchannel.com/indeks",
             "item_tag": "div.bt-con",
-            "time_tag": None,
-            "pagination_tag": None,
         },
     ]
 
 
-def scrape_site(config, max_pages=3, max_item=50):
+def scrape_site(config, max_item=50):
     """
     Scrape one site based on config.
-    Only collects today's articles, follows pagination up to max_pages.
+    Collects articles up to max_item limit.
     """
     results = []
     url = config["url"]
-    pages_crawled = 0
 
-    while url and pages_crawled < max_pages:
-        pages_crawled += 1
+    while url and len(results) < max_item:
         log(f"Crawling {url}")
 
         try:
@@ -69,13 +59,11 @@ def scrape_site(config, max_pages=3, max_item=50):
         soup = BeautifulSoup(resp.text, "html.parser")
         items = soup.select(config["item_tag"])
         if not items:
-            log(f"❌ No items found on {url}")
+            log(f"No items found on {url}")
             break
 
-        # today_str = date.today().strftime("%Y-%m-%d")  # YYYY-MM-DD
-        curr_item = 0
         for item in items:
-            if curr_item >= max_item:
+            if len(results) >= max_item:
                 break
             title_tag = item.find("a", href=True)
             if not title_tag:
@@ -102,20 +90,11 @@ def scrape_site(config, max_pages=3, max_item=50):
             results.append({
                 "title": title,
                 "link": link,
-                # "time": datetime.now().strftime("%Y-%m-%d"),
                 "content": content
             })
-            curr_item += 1
 
-        # find pagination (if any)
-        if config["pagination_tag"]:
-            next_page = soup.select_one(config["pagination_tag"])
-            if next_page and next_page.get("href"):
-                url = urljoin(url, next_page["href"])
-            else:
-                url = None
-        else:
-            url = None
+        # Stop pagination since we control total via max_item
+        url = None
 
     return results
 
@@ -124,21 +103,36 @@ def save_to_txt(articles, filename="news.txt"):
         for art in articles:
             f.write("### Article Start\n")
             f.write(f"Title: {art.get('title','')}\n")
-            # f.write(f"Date: {art.get('time','')}\n")
             f.write(f"Source: {art.get('link','')}\n")
             f.write("Content:\n")
-            # save first 500 chars if content is too long
-            # content = art.get("content", "")
-            # if len(content) > 500:
-            #     content = content[:500] + "..."
-            # f.write(content.strip() + "\n")
             f.write(art.get("content", "") + "\n")
             f.write("### Article End\n\n")
 
-            
+
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Scrape Indonesian stock market news")
+    parser.add_argument("--max_items", type=int, default=100,
+                        help="Maximum total number of articles to scrape (default: 100)")
+    parser.add_argument("--output", type=str, default="news.txt",
+                        help="Output file path (default: news.txt)")
+
+    args = parser.parse_args()
+
+    # Calculate items per site
+    sites = get_sites()
+    items_per_site = max(1, args.max_items // len(sites))
+
+    log(f"Scraping up to {args.max_items} total articles ({items_per_site} per site)")
+
     all_results = []
-    for site in get_sites():
-        all_results.extend(scrape_site(site, max_pages=2, max_item=50))
-    save_to_txt(all_results)
-    log(f"Collected {len(all_results)} news")
+    for site in sites:
+        if len(all_results) >= args.max_items:
+            break
+        remaining = args.max_items - len(all_results)
+        max_for_site = min(items_per_site, remaining)
+        all_results.extend(scrape_site(site, max_item=max_for_site))
+
+    save_to_txt(all_results, filename=args.output)
+    log(f"Collected {len(all_results)} articles -> {args.output}")

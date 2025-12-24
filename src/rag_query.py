@@ -141,7 +141,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Query RAG for relevant news articles")
     parser.add_argument("--query", type=str,
-                        default="today's stock market movements, price changes, trading analysis, and financial news",
+                        default="today's indonesia stock market movements, price changes, trading analysis, and financial news",
                         help="Search query for semantic search")
     parser.add_argument("--top_k", type=int, default=50,
                         help="Number of top articles to retrieve")

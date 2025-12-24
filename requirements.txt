@@ -12,3 +12,6 @@ transformers==4.38.2
 
 # Utilities
 numpy==1.26.4
+
+# MCP Server
+mcp>=1.0.0

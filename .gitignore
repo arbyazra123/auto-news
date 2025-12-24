@@ -1,6 +1,5 @@
 venv
 .cache
-*.gguf
 *.log
 news.txt
 news_condensed.txt
