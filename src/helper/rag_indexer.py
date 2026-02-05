@@ -3,6 +3,7 @@
 RAG Indexer: Embeds and stores articles in Milvus
 Scrape unlimited articles, store everything with semantic search capability
 """
+import os
 import re
 from datetime import datetime
 from pymilvus import connections, Collection, FieldSchema, CollectionSchema, DataType, utility
@@ -14,7 +15,10 @@ def log(message: str):
     print(formatted)
 
 class NewsIndexer:
-    def __init__(self, host="localhost", port="19530", collection_name="news_articles"):
+    def __init__(self, host=None, port=None, collection_name="news_articles"):
+        # Use environment variables if provided, otherwise use defaults
+        host = host or os.getenv("MILVUS_HOST", "localhost")
+        port = port or os.getenv("MILVUS_PORT", "19530")
         self.collection_name = collection_name
         self.embedding_model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')  # Supports Indonesian
         self.dim = 384  # Embedding dimension for this model
@@ -102,25 +106,65 @@ class NewsIndexer:
 
         return embeddings.tolist()
 
+    def get_existing_links(self):
+        """Query Milvus to get all existing article links"""
+        collection = Collection(self.collection_name)
+        collection.load()
+
+        # Query all links from the collection
+        try:
+            results = collection.query(
+                expr="id > 0",  # Get all records
+                output_fields=["link"]
+            )
+            existing_links = {result["link"] for result in results}
+            log(f"Found {len(existing_links)} existing articles in Milvus")
+            return existing_links
+        except Exception as e:
+            log(f"Could not query existing links (collection may be empty): {e}")
+            return set()
+
     def index_articles(self, articles):
         """Store articles with embeddings in Milvus"""
         if not articles:
             log("No articles to index")
             return
 
-        log(f"Indexing {len(articles)} articles into Milvus")
+        log(f"Checking {len(articles)} articles for duplicates")
+
+        # Get existing links to prevent duplication
+        existing_links = self.get_existing_links()
+
+        # Filter out articles with duplicate links
+        new_articles = []
+        duplicate_count = 0
+        for article in articles:
+            link = article.get("link", article["source"])
+            if link not in existing_links:
+                new_articles.append(article)
+            else:
+                duplicate_count += 1
+
+        if duplicate_count > 0:
+            log(f"Skipping {duplicate_count} duplicate articles")
+
+        if not new_articles:
+            log("No new articles to index (all are duplicates)")
+            return
+
+        log(f"Indexing {len(new_articles)} new articles into Milvus")
 
         # Generate embeddings
-        embeddings = self.embed_articles(articles)
+        embeddings = self.embed_articles(new_articles)
 
         # Prepare data for insertion
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         entities = [
-            [a["title"] for a in articles],
-            [a["source"] for a in articles],
-            [a.get("link", a["source"]) for a in articles],  # Use source as fallback
-            [a["content"][:65535] for a in articles],  # Truncate to max length
-            [timestamp] * len(articles),
+            [a["title"] for a in new_articles],
+            [a["source"] for a in new_articles],
+            [a.get("link", a["source"]) for a in new_articles],  # Use source as fallback
+            [a["content"][:65535] for a in new_articles],  # Truncate to max length
+            [timestamp] * len(new_articles),
             embeddings
         ]
 
@@ -129,7 +173,7 @@ class NewsIndexer:
         collection.insert(entities)
         collection.flush()
 
-        log(f"Successfully indexed {len(articles)} articles")
+        log(f"Successfully indexed {len(new_articles)} new articles")
         log(f"Total articles in collection: {collection.num_entities}")
 
     def index_from_file(self, file_path="news.txt"):

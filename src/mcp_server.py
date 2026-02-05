@@ -46,7 +46,7 @@ async def list_tools() -> list[Tool]:
                     "max_items": {
                         "type": "number",
                         "description": "Maximum total number of articles to scrape (default: 50)",
-                        "default": 50,
+                        "default": 100,
                     },
                     "query": {
                         "type": "string",
@@ -180,14 +180,14 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
 
 async def get_news(args: dict) -> list[TextContent]:
     """Run the news pipeline and return condensed news."""
-    max_items = args.get("max_items", 50)
+    max_items = args.get("max_items", 100)
     query = args.get(
         "query",
         "today's indonesia stock market movements, price changes, trading analysis, and financial news",
     )
     top_k = args.get("top_k", 50)
     days_back = args.get("days_back", 1)
-    max_chars = args.get("max_chars", 2000)
+    max_chars = args.get("max_chars", 2500)
 
     # First check if Docker containers are running
     docker_status = await check_docker_status_internal()
@@ -201,18 +201,19 @@ async def get_news(args: dict) -> list[TextContent]:
         )
         return [TextContent(type="text", text=message)]
 
-    # Run the news pipeline with custom parameters
-    script_path = PROJECT_ROOT / "prepare_news.sh"
-
-    if not script_path.exists():
-        return [
-            TextContent(
-                type="text",
-                text=f"Error: prepare_news.sh not found at {script_path}",
-            )
-        ]
-
     try:
+        # Remove existing news files to ensure fresh data
+        news_txt_path = PROJECT_ROOT / "news.txt"
+        news_condensed_path = PROJECT_ROOT / "news_condensed.txt"
+
+        if news_txt_path.exists():
+            news_txt_path.unlink()
+            log("[MCP] Removed existing news.txt")
+
+        if news_condensed_path.exists():
+            news_condensed_path.unlink()
+            log("[MCP] Removed existing news_condensed.txt")
+
         # Modify the rag_query.py call in the pipeline to use custom parameters
         # We'll run the steps manually with custom parameters
         log(f"[MCP] Running news pipeline with parameters:")
@@ -222,7 +223,7 @@ async def get_news(args: dict) -> list[TextContent]:
         # Step 1: Scrape news
         log(f"[MCP] Step 1: Scraping up to {max_items} news articles...")
         result = subprocess.run(
-            [PYTHON_EXECUTABLE, "src/scraper.py", "--max_items", str(max_items)],
+            [PYTHON_EXECUTABLE, "src/helper/scraper.py", "--max_items", str(max_items)],
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,
@@ -239,7 +240,7 @@ async def get_news(args: dict) -> list[TextContent]:
         # Step 2: Index articles
         log("[MCP] Step 2: Indexing articles into Milvus...")
         result = subprocess.run(
-            [PYTHON_EXECUTABLE, "src/rag_indexer.py"],
+            [PYTHON_EXECUTABLE, "src/helper/rag_indexer.py"],
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,
@@ -258,7 +259,7 @@ async def get_news(args: dict) -> list[TextContent]:
         result = subprocess.run(
             [
                 PYTHON_EXECUTABLE,
-                "src/rag_query.py",
+                "src/helper/rag_query.py",
                 "--query",
                 query,
                 "--top_k",

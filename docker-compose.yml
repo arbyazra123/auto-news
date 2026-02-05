@@ -63,6 +63,31 @@ services:
     networks:
       - tunnel
 
+  stock-api:
+    container_name: idx-stock-api
+    build:
+      context: ./src
+      dockerfile: stock_api/Dockerfile
+    ports:
+      - "13052:13052"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MILVUS_HOST=milvus-standalone
+      - MILVUS_PORT=19530
+    volumes:
+      - ./volumes/news_data:/app/data
+    depends_on:
+      - milvus-standalone
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:13052/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - tunnel
+
 networks:
   tunnel:
     external: true

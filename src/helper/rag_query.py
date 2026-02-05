@@ -3,6 +3,7 @@
 RAG Query: Semantic search to retrieve most relevant articles
 Query Milvus and return top N articles for analysis
 """
+import os
 from datetime import datetime, timedelta
 from pymilvus import connections, Collection
 from sentence_transformers import SentenceTransformer
@@ -13,7 +14,10 @@ def log(message: str):
     print(formatted)
 
 class NewsQuerier:
-    def __init__(self, host="localhost", port="19530", collection_name="news_articles"):
+    def __init__(self, host=None, port=None, collection_name="news_articles"):
+        # Use environment variables if provided, otherwise use defaults
+        host = host or os.getenv("MILVUS_HOST", "localhost")
+        port = port or os.getenv("MILVUS_PORT", "19530")
         self.collection_name = collection_name
         self.embedding_model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
 

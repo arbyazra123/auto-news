@@ -11,7 +11,9 @@ Connect any MCP-compatible AI assistant (Claude, or other LLMs) and ask: *"Show 
   - [Installation](#installation)
   - [Option 1: Use with MCP-Compatible AI Assistants](#option-1-use-with-mcp-compatible-ai-assistants-recommended)
   - [Option 2: Manual CLI Usage](#option-2-manual-cli-usage)
+  - [Option 3: REST API Usage](#option-3-rest-api-usage)
 - [MCP Integration Details](#mcp-integration-details)
+- [REST API Integration](#rest-api-integration)
 - [Files Overview](#files-overview)
 - [Manual Step-by-Step Usage](#manual-step-by-step-usage)
 - [Web Server Features](#web-server-features)
@@ -20,9 +22,9 @@ Connect any MCP-compatible AI assistant (Claude, or other LLMs) and ask: *"Show 
 - [Troubleshooting](#troubleshooting)
 - [Dependencies](#dependencies)
 - [Example Output](#example-output)
+- [Features](#features)
 - [Future Enhancements](#future-enhancements)
 - [Disclaimer](#disclaimer)
-- [Contributing](#contributing)
 
 ## Complete Workflow
 
@@ -137,7 +139,35 @@ python3 serve_report.py
 
 Then open: **http://localhost:3131**
 
+### Option 3: REST API Usage
+
+**Start the unified API server** for programmatic access:
+
+```bash
+python src/unified_api_server.py
+```
+
+The API provides both **News Pipeline** and **Stock Analysis** endpoints:
+
+**News Pipeline:**
+- `POST /news/get` - Run news pipeline asynchronously
+- `POST /news/get/sync` - Run news pipeline synchronously
+- `GET /news/status` - Check pipeline status
+- `GET /news/read` - Read condensed news report
+- `GET /news/read/json` - Get report as JSON
+
+**Stock Analysis:**
+- `POST /api/stock/price` - Get current stock price & info
+- `POST /api/stock/history` - Get historical OHLCV data
+- `POST /api/stock/technicals` - Get technical indicators (RSI, MACD, MA, Bollinger Bands)
+- `POST /api/stock/bandarmology` - Get bandarmology-style analysis (smart money flow)
+
+**Interactive API documentation:** http://localhost:13051/docs
+
+**For detailed API documentation, see:** [API_USAGE.md](API_USAGE.md)
+
 ### Useful Links
+- **REST API Docs** (Swagger UI): http://localhost:13051/docs
 - **Attu UI** (Milvus database explorer): http://localhost:1233
 - **Web Report**: http://localhost:3131
 
@@ -167,13 +197,82 @@ The MCP server automatically uses your Python environment (conda/venv) to run th
 
 **Learn more about MCP:** [https://modelcontextprotocol.io/](https://modelcontextprotocol.io/)
 
+## REST API Integration
+
+The unified API server (`src/unified_api_server.py`) provides a comprehensive REST API for both news pipeline management and stock market analysis.
+
+### Quick Start
+
+```bash
+# Start the API server
+python src/unified_api_server.py
+```
+
+The server runs on **http://localhost:13051** with interactive Swagger documentation at **/docs**.
+
+### API Services
+
+The API combines two major services:
+
+#### 1. News Pipeline Service
+Automated news scraping, indexing, and semantic search:
+
+- **Run pipeline asynchronously** - `POST /news/get` (returns immediately, check status via `/news/status`)
+- **Run pipeline synchronously** - `POST /news/get/sync` (waits for completion)
+- **Check execution status** - `GET /news/status`
+- **Read condensed report** - `GET /news/read` (plain text) or `GET /news/read/json` (JSON with metadata)
+
+**Example:** Get 100 articles from the last 3 days:
+```bash
+curl -X POST http://localhost:13051/news/get \
+  -H "Content-Type: application/json" \
+  -d '{
+    "max_items": 100,
+    "days_back": 3,
+    "top_k": 50
+  }'
+```
+
+#### 2. Stock Analysis Service
+Technical and fundamental analysis for Indonesian stocks (IDX):
+
+- **Current price & info** - `POST /api/stock/price`
+- **Historical OHLCV data** - `POST /api/stock/history`
+- **Technical indicators** - `POST /api/stock/technicals` (RSI, MACD, Moving Averages, Bollinger Bands)
+- **Bandarmology analysis** - `POST /api/stock/bandarmology` (smart money flow detection)
+
+**Example:** Get technical analysis for BBCA:
+```bash
+curl -X POST http://localhost:13051/api/stock/technicals \
+  -H "Content-Type: application/json" \
+  -d '{
+    "symbol": "BBCA",
+    "period": "6mo"
+  }'
+```
+
+### Use Cases
+
+- **Integrate with trading bots** - Automate news monitoring and technical analysis
+- **Build dashboards** - Create custom web interfaces using the API
+- **Schedule analysis** - Use cron jobs to trigger pipeline runs
+- **Multi-client access** - Multiple applications can access the same pipeline
+- **Mobile apps** - Build mobile interfaces for market monitoring
+
+### Full API Documentation
+
+For complete endpoint details, request/response schemas, and examples, see: **[API_USAGE.md](API_USAGE.md)**
+
 ## Files Overview
 
 ### Core Scripts
 - **`src/mcp_server.py`** - MCP server (connects AI assistants to pipeline)
-- **`scraper.py`** - Scrapes financial news (unlimited articles)
-- **`rag_indexer.py`** - Embeds & stores articles in Milvus
-- **`rag_query.py`** - Semantic search for relevant articles
+- **`src/unified_api_server.py`** - REST API server (news pipeline + stock analysis)
+- **`src/helper/scraper.py`** - Scrapes financial news (unlimited articles)
+- **`src/helper/rag_indexer.py`** - Embeds & stores articles in Milvus (with link deduplication)
+- **`src/helper/rag_query.py`** - Semantic search for relevant articles
+- **`src/helper/news_pipeline.py`** - End-to-end pipeline orchestrator
+- **`src/stock_api/stock_api_server.py`** - Stock analysis service (technical & bandarmology)
 - **`analysis_prompt.txt`** - Prompt template for AI analysis (CLI mode)
 - **`serve_report.py`** - Web server to display reports
 
@@ -321,6 +420,32 @@ Change port in `serve_report.py` or kill existing process:
 lsof -ti:3131 | xargs kill -9
 ```
 
+### API: Port 13051 already in use
+Change port in `src/unified_api_server.py` or kill existing process:
+```bash
+lsof -ti:13051 | xargs kill -9
+```
+
+### API: "Stock data not available" or Yahoo Finance errors
+Some Indonesian stocks may have different ticker formats on Yahoo Finance:
+- IDX format: `BBCA`
+- Yahoo Finance format: `BBCA.JK` (automatically appended by the API)
+
+If issues persist:
+1. Verify stock symbol is correct (check IDX website)
+2. Try a different time period (some stocks have limited historical data)
+3. Check internet connectivity (API needs to access Yahoo Finance)
+
+### API: Milvus connection errors
+Ensure Docker containers are running:
+```bash
+docker ps | grep -E "milvus|etcd|minio"
+
+# If not running, start them:
+cd rag
+docker-compose up -d
+```
+
 ## Dependencies
 
 See `requirements.txt` for full list:
@@ -335,6 +460,10 @@ Key packages:
 - `sentence-transformers` - Multilingual embeddings
 - `torch` - Deep learning backend
 - `mcp` - Model Context Protocol SDK
+- `fastapi`, `uvicorn` - REST API server
+- `yfinance` - Stock market data from Yahoo Finance
+- `pandas`, `numpy` - Data analysis
+- `ta` - Technical analysis indicators
 
 ## Example Output
 
@@ -345,44 +474,57 @@ The generated `daily_report.md` includes:
 - Top 3 actionable recommendations
 - Individual article analysis
 
-## Future Enhancements
+## Features
 
-This project has significant potential for expansion. Here are planned enhancements:
+### Technical Analysis Integration ✅ **IMPLEMENTED**
 
-### Technical Analysis Integration
+The system now includes comprehensive technical analysis via the **REST API**:
 
-**Combine fundamental + technical analysis for better trading decisions:**
-
-- **Data Source**: Fetch real-time stock data from Yahoo Finance API
-- **Technical Indicators**: Calculate using Python (pandas-ta, ta-lib):
-  - Moving averages (SMA, EMA)
+- **Data Source**: Real-time stock data from Yahoo Finance API
+- **Technical Indicators Available**:
+  - Moving averages (SMA 20/50, EMA 12/26)
   - RSI (Relative Strength Index)
   - MACD (Moving Average Convergence Divergence)
   - Bollinger Bands
-  - Volume analysis
-  - Support/Resistance levels
+  - Volume analysis (OBV, ADL, VPT)
+  - Money Flow Index (MFI)
+  - Average True Range (ATR)
 
-- **Analysis Matching**:
+- **Bandarmology Analysis**: Smart money flow detection with:
+  - Accumulation/Distribution phases
+  - Volume pattern recognition
+  - Price structure analysis
+  - Breakout triggers
+  - Risk management levels (stop loss, take profit)
+
+**Access via REST API:**
+```bash
+# Get technical indicators
+curl -X POST http://localhost:13051/api/stock/technicals \
+  -d '{"symbol": "BBCA", "period": "6mo"}'
+
+# Get bandarmology analysis
+curl -X POST http://localhost:13051/api/stock/bandarmology \
+  -d '{"symbol": "BBCA", "period": "6mo"}'
+```
+
+See [API_USAGE.md](API_USAGE.md) for complete documentation.
+
+## Future Enhancements
+
+### Planned Features
+
+- **Unified Analysis Endpoint**: Combine fundamental news + technical indicators into a single endpoint
   - Cross-reference fundamental news with technical signals
   - Identify stocks where both analyses align (strong buy/sell signals)
   - Flag divergences (e.g., positive news but bearish technicals)
   - Generate confidence scores based on multi-factor agreement
+  - Example: `POST /api/stock/unified_analysis` → Combined recommendation
 
-- **Enhanced MCP Tool**: Add `get_stock_analysis` tool that combines:
-  ```
-  Fundamental (from news) + Technical (from Yahoo Finance) → Unified Recommendation
-  ```
-
-**Example Output:**
-```
-Stock: BBCA
-Fundamental: Positive (strong earnings, dividend yield)
-Technical: Bullish (RSI oversold, golden cross forming)
-Verdict: STRONG BUY (both analyses align)
-Confidence: 85%
-```
-
-### Other Potential Enhancements
+- **MCP Integration for Stock Analysis**: Add stock analysis tools to MCP server
+  - `get_stock_price` - Query stock prices from AI assistants
+  - `get_technical_analysis` - Get technical indicators via AI
+  - `get_bandarmology` - Get smart money flow analysis via AI
 
 - **Multi-language support**: Scrape English financial news sources
 - **Sentiment analysis**: Add NLP sentiment scoring to news articles
@@ -390,6 +532,7 @@ Confidence: 85%
 - **Portfolio tracking**: Monitor your holdings against news/technical signals
 - **Backtesting**: Test strategy performance against historical data
 - **Real-time updates**: WebSocket integration for live market data
+- **Advanced deduplication**: Beyond link-based deduplication, add content similarity detection
 
 **Contributions welcome!** Feel free to implement any of these features.
 

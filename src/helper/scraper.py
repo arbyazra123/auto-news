@@ -34,6 +34,14 @@ def get_sites():
             "url": "https://www.idxchannel.com/indeks",
             "item_tag": "div.bt-con",
         },
+        {
+            "url": "https://www.liputan6.com/saham",
+            "item_tag": "article.articles--iridescent-list--item",
+        },
+        {
+            "url": "https://insight.kontan.co.id/rubrik/171/Market",
+            "item_tag": "div.card__item--horizon",
+        },
     ]
 
 
