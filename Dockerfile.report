@@ -1,0 +1,23 @@
+FROM python:3.11-alpine
+
+LABEL maintainer="auto-news"
+LABEL description="Minimal report server for displaying daily market analysis reports"
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the report server script
+COPY src/helper/serve_report.py /app/serve_report.py
+
+# Install minimal dependencies
+RUN pip install --no-cache-dir flask markdown
+
+# Expose port
+EXPOSE 3131
+
+# Run as non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Start server
+CMD ["python", "serve_report.py"]

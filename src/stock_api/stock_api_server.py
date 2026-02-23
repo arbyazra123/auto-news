@@ -9,14 +9,16 @@ import logging
 from datetime import datetime
 import subprocess
 import sys
+import time
 from typing import Optional, List, Dict, Any
 from pathlib import Path
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from fastapi.responses import PlainTextResponse
 import uvicorn
+from typing import Optional as OptionalType
 
 # Import all dependencies
 import yfinance as yf
@@ -34,6 +36,39 @@ from ta.volume import (
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("idx-stock-api")
+
+# Security configuration
+CLAUDE_SECRET_KEY = os.getenv("CLAUDE_SECRET_KEY", "")  # Set via env var for production
+ALLOWED_IPS = ["127.0.0.1", "localhost", "::1"]  # Localhost only by default
+
+def verify_claude_access(request: Request, x_secret_key: OptionalType[str] = Header(None)):
+    """
+    Security check for Claude API endpoints:
+    1. Must be from localhost OR docker internal network
+    2. Optional: Must provide valid secret key if CLAUDE_SECRET_KEY is set
+    """
+    client_ip = request.client.host
+
+    # Check 1: IP whitelist (localhost or docker internal)
+    is_local = client_ip in ALLOWED_IPS or client_ip.startswith("172.") or client_ip.startswith("192.168.")
+
+    # Check 2: Secret key (if configured)
+    if CLAUDE_SECRET_KEY:
+        if not x_secret_key or x_secret_key != CLAUDE_SECRET_KEY:
+            logger.warning(f"Unauthorized Claude API access attempt from {client_ip}")
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+    elif not is_local:
+        # If no secret key configured, strictly enforce localhost only
+        logger.warning(f"Unauthorized Claude API access attempt from {client_ip} (not localhost)")
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden"
+        )
+
+    logger.info(f"Claude API access granted to {client_ip}")
 
 # Server configuration
 # HTTP_HOST = os.getenv("MCP_HTTP_HOST", "127.0.0.1")
@@ -74,8 +109,8 @@ class GetNewsRequest(BaseModel):
         default="today's indonesia stock market movements, price changes, trading analysis, and financial news",
         description="Search query for semantic search"
     )
-    top_k: int = Field(default=50, description="Number of top relevant articles to retrieve")
-    days_back: Optional[int] = Field(default=None, description="Get articles from last N days")
+    top_k: int = Field(default=30, description="Number of top relevant articles to retrieve")
+    days_back: int = Field(default=2, description="Get articles from last N days")
     max_chars: int = Field(default=2000, description="Max characters per article in output")
     output: str = Field(default="news_condensed.txt", description="Output file name")
     skip_scrape: bool = Field(default=False, description="Skip scraping, use existing news.txt")
@@ -854,6 +889,10 @@ def screen_preopen_setups(stock_list: List[str], limit: int = 10, min_score: int
         try:
             ticker = ensure_idx_ticker(symbol)
             stock = yf.Ticker(ticker)
+
+            # Add small delay to avoid rate limiting
+            time.sleep(0.2)
+
             hist = stock.history(period="1mo")
 
             if hist.empty or len(hist) < 40:
@@ -964,7 +1003,11 @@ def screen_bpjs_setups(stock_list: List[str], limit: int = 10, min_score: int = 
         try:
             ticker = ensure_idx_ticker(symbol)
             stock = yf.Ticker(ticker)
-            hist = stock.history(period="3mo")
+
+            # Add small delay to avoid rate limiting (0.2 seconds between requests)
+            time.sleep(0.2)
+
+            hist = stock.history(period="1mo")
 
             if hist.empty or len(hist) < 50:
                 continue
@@ -1060,6 +1103,8 @@ def screen_bpjs_setups(stock_list: List[str], limit: int = 10, min_score: int = 
             candidates.append(candidate)
 
         except Exception as e:
+            # Log warning but continue with other stocks
+            # Common errors: rate limiting, delisted stocks, insufficient data
             logger.warning(f"Error screening {symbol} for BPJS: {e}")
             continue
 
@@ -1084,6 +1129,10 @@ def screen_bsjp_setups(stock_list: List[str], limit: int = 10, min_score: int = 
         try:
             ticker = ensure_idx_ticker(symbol)
             stock = yf.Ticker(ticker)
+
+            # Add small delay to avoid rate limiting
+            time.sleep(0.2)
+
             hist = stock.history(period="3mo")
 
             if hist.empty or len(hist) < 50:
@@ -1389,6 +1438,10 @@ def screen_day_trade_setups(stock_list: List[str], limit: int = 10, mode: str = 
         try:
             ticker = ensure_idx_ticker(symbol)
             stock = yf.Ticker(ticker)
+
+            # Add small delay to avoid rate limiting
+            time.sleep(0.2)
+
             hist = stock.history(period="3mo")
 
             if hist.empty or len(hist) < 50:
@@ -1573,11 +1626,11 @@ class TimeContextRequest(BaseModel):
 
 
 class StockListRequest(BaseModel):
-    stock_index: Optional[str] = Field(None, description="Stock index: LQ45, IDX30, or BOTH")
+    stock_index: Optional[str] = Field("BOTH", description="Stock index: LQ45, IDX30, or BOTH")
 
 
 class PreopenSetupsRequest(BaseModel):
-    stock_index: Optional[str] = Field(None, description="Stock index: LQ45, IDX30, or BOTH")
+    stock_index: Optional[str] = Field("BOTH", description="Stock index: LQ45, IDX30, or BOTH")
     limit: int = Field(10, description="Number of setups to return")
     min_score: int = Field(70, description="Minimum bandarmology score")
     min_avg_volume: int = Field(1000000, description="Minimum average volume")
@@ -1585,7 +1638,7 @@ class PreopenSetupsRequest(BaseModel):
 
 
 class BPJSSetupsRequest(BaseModel):
-    stock_index: Optional[str] = Field(None, description="Stock index: LQ45, IDX30, or BOTH")
+    stock_index: Optional[str] = Field("BOTH", description="Stock index: LQ45, IDX30, or BOTH")
     limit: int = Field(10, description="Number of setups to return")
     min_score: int = Field(65, description="Minimum bandarmology score")
     min_avg_volume: int = Field(1000000, description="Minimum average volume")
@@ -1593,11 +1646,11 @@ class BPJSSetupsRequest(BaseModel):
 
 
 class BSJPSetupsRequest(BaseModel):
-    stock_index: Optional[str] = Field(None, description="Stock index: LQ45, IDX30, or BOTH")
+    stock_index: Optional[str] = Field("BOTH", description="Stock index: LQ45, IDX30, or BOTH")
     limit: int = Field(10, description="Number of setups to return")
     min_score: int = Field(60, description="Minimum bandarmology score")
     min_avg_volume: int = Field(1000000, description="Minimum average volume")
-    enable_bandarmology: bool = Field(True, description="Enable bandarmology analysis")
+    enable_bandarmology: bool = Field(False, description="Enable bandarmology analysis")
 
 
 class DayTradeSetupsRequest(BaseModel):
@@ -1637,6 +1690,8 @@ async def root():
             "get_news_sync": "/api/news/get/sync",
             "read_news_report": "/api/news/read",
             "read_news_report_json": "/api/news/read/json",
+            "read_news_analyze": "/api/news/analyze",
+            "read_news_check_files": "/api/news/check_files",
         }
     }
 
@@ -2049,6 +2104,106 @@ async def read_news_report_json(file: str = "news_condensed.txt"):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/api/news/analyze")
+def analyze_news_with_claude(
+    request: Request,
+    x_secret_key: OptionalType[str] = Header(None),
+    prompt: str = """
+You are a financial analyst.
+
+Please perform the following task:
+1. Analyze the financial news articles focusing on:
+   - Price movements and catalysts
+   - Market sentiment
+   - Key stock tickers mentioned
+   - Dominant themes
+2. Generate a comprehensive markdown report
+3. Write the report to 'daily_report.md' in the current directory, make sure it has no emoji, treat as professional report
+4. If 'daily_report.md' already exists, just replace (delete and write a new report)
+
+The report should include:
+- Market overview section
+- Most mentioned stocks with analysis
+- Top 3 actionable recommendations
+- Honorable article insights with sentiment
+- Be concise and data-focused
+- Important - write in Bahasa Indonesia, but for special terms, use English
+
+After writing the report, confirm it was created successfully.
+""",
+    file: str = "news_condensed.txt",
+) -> str:
+    """
+    Read the condensed news from /app/data and analyze it using `claude -p` CLI.
+    🔒 SECURITY: This endpoint is protected. Only accessible from localhost or with valid X-Secret-Key header.
+
+    prompt: analysis instruction prepended before the news content.
+    file: news file in /app/data/ (default: news_condensed.txt).
+    """
+    # Security check
+    verify_claude_access(request, x_secret_key)
+
+    import subprocess
+    from pathlib import Path
+
+    news_path = Path(f"/app/data/{file}")
+    if not news_path.exists():
+        return f"ERROR: {file} not found in /app/data. Run the news pipeline first."
+
+    content = news_path.read_text(encoding="utf-8")
+    full_input = f"{prompt}\n\n---\n\n{content}"
+
+    try:
+        # Write prompt to temp file for appuser to read
+        temp_input = Path("/tmp/claude_input.txt")
+        temp_input.write_text(full_input, encoding="utf-8")
+        os.chmod(temp_input, 0o644)  # Make readable by appuser
+
+        # Run claude as non-root user (appuser) to avoid permissions error
+        result = subprocess.run(
+            ["su", "-", "appuser", "-c",
+             "cd /app/data && claude -p --dangerously-skip-permissions < /tmp/claude_input.txt"],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+
+        # Clean up temp file
+        temp_input.unlink(missing_ok=True)
+
+        if result.returncode != 0:
+            return f"ERROR (exit {result.returncode}):\nSTDOUT: {result.stdout}\nSTDERR: {result.stderr}"
+        return result.stdout.strip()
+    except FileNotFoundError:
+        return "ERROR: `claude` CLI not found in container. Rebuild the Docker image."
+    except subprocess.TimeoutExpired:
+        return "ERROR: claude -p timed out after 300s."
+    except Exception as e:
+        return f"ERROR: {e}"
+    
+@app.get("/api/news/check_files")
+def check_existing_files() -> dict:
+    """
+    Check which key files already exist in the data volume (/app/data).
+    Use this FIRST before starting any flow to avoid redundant work:
+    - If news_condensed.txt exists → skip running the news pipeline
+    - If daily_report.md exists → skip running the analysis
+    Returns each file's existence status and last modified time.
+    """
+    from pathlib import Path
+    from datetime import datetime
+
+    files = ["news_condensed.txt", "daily_report.md"]
+    result = {}
+    for name in files:
+        path = Path(f"/app/data/{name}")
+        if path.exists():
+            mtime = datetime.fromtimestamp(path.stat().st_mtime).isoformat()
+            result[name] = {"exists": True, "last_modified": mtime}
+        else:
+            result[name] = {"exists": False, "last_modified": None}
+    return result
 
 
 # ============================================================================

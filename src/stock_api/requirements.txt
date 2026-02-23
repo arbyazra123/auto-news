@@ -11,6 +11,10 @@ ta==0.11.0
 # Utilities
 numpy==1.26.4
 
+# MCP server
+mcp
+httpx
+
 # Helper dependencies (for news pipeline integration)
 requests==2.31.0
 beautifulsoup4==4.12.3
@@ -20,6 +24,7 @@ transformers==4.38.2
 markdown==3.5.1
 
 # Vector database with explicit dependency resolution
+setuptools>=67
 marshmallow>=3.20,<4.0
 environs<=9.5.0
 pymilvus==2.4.3

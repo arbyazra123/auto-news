@@ -4,3 +4,4 @@ venv
 news.txt
 news_condensed.txt
 volumes
+.env

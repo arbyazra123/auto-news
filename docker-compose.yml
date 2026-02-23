@@ -76,11 +76,33 @@ services:
       - MILVUS_PORT=19530
     volumes:
       - ./volumes/news_data:/app/data
+      - ./volumes/claude_config:/home/appuser/.claude
     depends_on:
       - milvus-standalone
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:13052/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - tunnel
+
+  report-server:
+    container_name: idx-report-server
+    build:
+      context: .
+      dockerfile: Dockerfile.report
+    ports:
+      - "3131:3131"
+    volumes:
+      - ./volumes/news_data:/app/data:ro  # Read-only mount
+    depends_on:
+      - stock-api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3131')"]
       interval: 30s
       timeout: 10s
       retries: 3

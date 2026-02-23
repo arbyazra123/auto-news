@@ -1,0 +1,17 @@
+# For Dockerfile.report build context
+
+# Ignore everything except what we need
+*
+
+# But include these
+!src/helper/serve_report.py
+
+# Don't include volumes
+volumes/
+.env
+*.log
+*.md
+__pycache__/
+*.pyc
+.git/
+.gitignore

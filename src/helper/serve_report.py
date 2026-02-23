@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
 Simple web server to serve daily_report.md as HTML
-Serves on 0.0.0.0:1313
+Serves on 0.0.0.0:3131
+
+Designed to run in a minimal Docker container with read-only access
+to the news_data volume from idx-stock-api.
 """
 
 import http.server
@@ -12,8 +15,12 @@ import markdown
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-PORT = 1313
+PORT = 3131
 HOST = "0.0.0.0"
+
+# Path to report file (in container: /app/data/daily_report.md)
+# On host: volumes/news_data/daily_report.md
+REPORT_FILE = os.getenv("REPORT_FILE", "/app/data/daily_report.md")
 
 
 class ReportHandler(http.server.SimpleHTTPRequestHandler):
@@ -25,12 +32,11 @@ class ReportHandler(http.server.SimpleHTTPRequestHandler):
 
             # Read and convert markdown to HTML
             try:
-                report_file = "daily_report.md"
-                with open(report_file, "r", encoding="utf-8") as f:
+                with open(REPORT_FILE, "r", encoding="utf-8") as f:
                     md_content = f.read()
 
                 # Get file modification time in Jakarta timezone
-                file_mtime = os.path.getmtime(report_file)
+                file_mtime = os.path.getmtime(REPORT_FILE)
                 jakarta_tz = ZoneInfo("Asia/Jakarta")
                 file_date = datetime.fromtimestamp(file_mtime, tz=jakarta_tz).strftime("%Y-%m-%d %H:%M:%S %Z")
 
@@ -151,7 +157,7 @@ class ReportHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(full_html.encode('utf-8'))
 
             except FileNotFoundError:
-                error_html = """
+                error_html = f"""
 <!DOCTYPE html>
 <html>
 <head>
@@ -167,13 +173,25 @@ class ReportHandler(http.server.SimpleHTTPRequestHandler):
             color: #e74c3c;
             font-size: 24px;
         }}
+        code {{
+            background-color: #f4f4f4;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-family: monospace;
+        }}
     </style>
 </head>
 <body>
     <div class="error">
         <h1>⚠️ Report Not Found</h1>
-        <p>daily_report.md does not exist yet.</p>
-        <p>Please run: <code>bash run_daily_analysis.sh</code></p>
+        <p>Report file does not exist yet: <code>{REPORT_FILE}</code></p>
+        <hr style="width: 50%; margin: 30px auto;">
+        <h3>Generate a report via:</h3>
+        <p><code>curl http://localhost:13052/api/news/analyze</code></p>
+        <p>or</p>
+        <p><code>bash run_daily_analysis.sh</code></p>
+        <br>
+        <p style="color: #7f8c8d; font-size: 14px;">Page auto-refreshes every 5 minutes</p>
     </div>
 </body>
 </html>
@@ -185,15 +203,19 @@ class ReportHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def main():
-    # Change to script directory
-    os.chdir(Path(__file__).parent)
-
     with socketserver.TCPServer((HOST, PORT), ReportHandler) as httpd:
         print("=" * 60)
         print(f"📊 Daily Report Server Running")
         print("=" * 60)
         print(f"\n🌐 Server started at: http://{HOST}:{PORT}")
-        print(f"📁 Serving from: {os.getcwd()}")
+        print(f"📁 Serving report from: {REPORT_FILE}")
+
+        # Check if report file exists
+        if Path(REPORT_FILE).exists():
+            print(f"✅ Report file found")
+        else:
+            print(f"⚠️  Report file not found (will show error page)")
+
         print(f"\n📝 Open in browser: http://localhost:{PORT}")
         print(f"\n🔄 Auto-refreshes every 5 minutes")
         print(f"\nPress Ctrl+C to stop the server\n")
