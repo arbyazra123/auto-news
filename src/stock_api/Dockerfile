@@ -47,6 +47,7 @@ COPY helper /app/helper
 # Copy application code
 COPY stock_api/stock_api_server.py .
 COPY stock_api/mcp_server.py .
+COPY stock_api/signals /app/signals
 COPY stock_api/entrypoint.sh /entrypoint.sh
 
 # Create data directory and set permissions for appuser

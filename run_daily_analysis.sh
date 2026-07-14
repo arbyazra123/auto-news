@@ -51,5 +51,17 @@ timeout 30m cat analysis_prompt.txt | claude -p --dangerously-skip-permissions
 log "Analysis complete"
 log "Daily report generated at: daily_report.md"
 
+# Step 4: Trigger signal batch (PM buy/hold/sell + allocation) via stock API
+log "Triggering signal batch via stock API"
+if curl -s -o /dev/null -w "%{http_code}" http://localhost:13052/ | grep -q "200"; then
+    curl -s -X POST http://localhost:13052/api/signals/run \
+        -H "Content-Type: application/json" \
+        -d '{"analyze": true, "notes": "daily cron"}' \
+        || log "Warning: signal batch trigger failed"
+    log "Signal batch triggered (check /api/signals/status)"
+else
+    log "Warning: stock API not reachable on :13052, skipping signal batch"
+fi
+
 conda deactivate
 log "Conda environment deactivated"

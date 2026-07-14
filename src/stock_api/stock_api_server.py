@@ -33,6 +33,12 @@ from ta.volume import (
     VolumePriceTrendIndicator
 )
 
+# Signal platform (PM buy/hold/sell + asset allocation)
+from signals import store as signal_store
+from signals.macro import get_macro_snapshot
+from signals.run_signals import build_analysis_input
+from signals.universe import IDX80
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("idx-stock-api")
@@ -849,6 +855,9 @@ STOCK_INDICES = {
         "UNTR", "UNVR"  # U-group
     ]
 }
+
+# IDX80 universe maintained in signals/universe.py (update on IDX rebalance)
+STOCK_INDICES["IDX80"] = IDX80
 
 
 def get_all_idx_stocks(stock_index: Optional[str] = None) -> List[str]:
@@ -1692,6 +1701,14 @@ async def root():
             "read_news_report_json": "/api/news/read/json",
             "read_news_analyze": "/api/news/analyze",
             "read_news_check_files": "/api/news/check_files",
+            "signals_run": "/api/signals/run",
+            "signals_status": "/api/signals/status",
+            "signals_latest": "/api/signals/latest",
+            "signals_allocation": "/api/signals/allocation",
+            "signals_changes": "/api/signals/changes",
+            "signals_ticker": "/api/signals/ticker/{ticker}",
+            "signals_macro": "/api/signals/macro",
+            "signals_analyze": "/api/signals/analyze",
         }
     }
 
@@ -2204,6 +2221,227 @@ def check_existing_files() -> dict:
         else:
             result[name] = {"exists": False, "last_modified": None}
     return result
+
+
+# ============================================================================
+# SIGNAL PLATFORM - PM BUY/HOLD/SELL + ASSET ALLOCATION
+# ============================================================================
+
+SIGNALS_DB = str(Path("data") / "signals.db")
+
+signal_status = {
+    "is_running": False,
+    "last_run": None,
+    "last_status": None,
+    "last_error": None
+}
+
+class SignalRunRequest(BaseModel):
+    tickers: Optional[str] = Field(None, description="Comma-separated ticker subset (default: full IDX80)")
+    period: str = Field(default="1y", description="OHLCV history period for scoring")
+    analyze: bool = Field(default=False, description="Run Claude overlay to write signal_report.md")
+    notes: str = Field(default="", description="Free-text note stored with the run")
+
+
+def run_signal_batch(params: SignalRunRequest):
+    """Run the signal batch in background (same subprocess pattern as run_pipeline)"""
+    global signal_status
+
+    try:
+        signal_status["is_running"] = True
+        signal_status["last_error"] = None
+
+        logger.info("Starting signal batch via API")
+
+        script_dir = Path(__file__).parent
+        cmd = [
+            sys.executable,
+            str(script_dir / "signals" / "run_signals.py"),
+            "--data-dir", "data",
+            "--period", params.period,
+        ]
+        if params.tickers:
+            cmd.extend(["--tickers", params.tickers])
+        if params.analyze:
+            cmd.append("--analyze")
+        if params.notes:
+            cmd.extend(["--notes", params.notes])
+
+        logger.info(f"Running command: {' '.join(cmd)}")
+
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+
+        signal_status["last_status"] = "success"
+        signal_status["last_run"] = datetime.now().isoformat()
+        logger.info("Signal batch completed successfully")
+
+        return result.stdout
+
+    except subprocess.CalledProcessError as e:
+        error_msg = f"Signal batch failed: {e.stderr}"
+        logger.error(error_msg)
+        signal_status["last_status"] = "failed"
+        signal_status["last_error"] = error_msg
+        signal_status["last_run"] = datetime.now().isoformat()
+        raise
+
+    except Exception as e:
+        error_msg = f"Unexpected error: {str(e)}"
+        logger.error(error_msg)
+        signal_status["last_status"] = "failed"
+        signal_status["last_error"] = error_msg
+        signal_status["last_run"] = datetime.now().isoformat()
+        raise
+
+    finally:
+        signal_status["is_running"] = False
+
+
+@app.get("/api/signals/status")
+async def get_signal_status():
+    """Get current signal batch execution status"""
+    return signal_status
+
+
+@app.post("/api/signals/run")
+async def start_signal_run(request: SignalRunRequest, background_tasks: BackgroundTasks):
+    """Run the signal batch asynchronously (IDX80 equities + bonds + money market)"""
+    global signal_status
+
+    if signal_status["is_running"]:
+        raise HTTPException(
+            status_code=409,
+            detail="Signal batch is already running. Please wait for it to complete."
+        )
+
+    background_tasks.add_task(run_signal_batch, request)
+
+    return {
+        "status": "started",
+        "message": "Signal batch started in background",
+        "check_status_at": "/api/signals/status",
+        "read_signals_at": "/api/signals/latest",
+        "parameters": request.model_dump()
+    }
+
+
+@app.get("/api/signals/latest")
+async def get_latest_signals(signal: Optional[str] = None, min_score: Optional[float] = None):
+    """Latest equity signals (optionally filtered by signal=BUY/HOLD/SELL and min_score)"""
+    try:
+        run = signal_store.get_latest_run(SIGNALS_DB)
+        if run is None:
+            raise HTTPException(status_code=404, detail="No signal runs yet. POST /api/signals/run first.")
+        signals = signal_store.get_signals(SIGNALS_DB, signal=signal, min_score=min_score)
+        return {"run": run, "count": len(signals), "signals": signals}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reading latest signals: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/signals/allocation")
+async def get_latest_allocation():
+    """Latest recommended asset allocation (equities / government bonds / money market)"""
+    try:
+        allocation = signal_store.get_allocation(SIGNALS_DB)
+        if allocation is None:
+            raise HTTPException(status_code=404, detail="No signal runs yet. POST /api/signals/run first.")
+        return {"run": signal_store.get_latest_run(SIGNALS_DB), "allocation": allocation}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reading allocation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/signals/changes")
+async def get_signal_changes():
+    """Signal upgrades/downgrades between the two most recent runs"""
+    try:
+        return signal_store.get_signal_changes(SIGNALS_DB)
+    except Exception as e:
+        logger.error(f"Error reading signal changes: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/signals/ticker/{ticker}")
+async def get_ticker_signal(ticker: str):
+    """Latest signal + run history for one ticker"""
+    try:
+        base = ticker.upper().replace(".JK", "")
+        signals = [s for s in signal_store.get_signals(SIGNALS_DB) if s["ticker"] == base]
+        history = signal_store.get_ticker_history(SIGNALS_DB, base)
+        if not signals and not history:
+            raise HTTPException(status_code=404, detail=f"No signals stored for {base}")
+        return {"ticker": base, "latest": signals[0] if signals else None, "history": history}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reading ticker signal: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/signals/macro")
+async def get_live_macro():
+    """Live macro snapshot: INDOGB yield curve, BI rate, inflation, derived metrics"""
+    try:
+        return get_macro_snapshot()
+    except Exception as e:
+        logger.error(f"Error fetching macro snapshot: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/signals/analyze")
+def analyze_signals_with_claude(
+    request: Request,
+    x_secret_key: OptionalType[str] = Header(None),
+) -> str:
+    """
+    Run the Claude overlay on the latest stored signal run and write
+    signal_report.md to /app/data.
+    🔒 SECURITY: Only accessible from localhost or with valid X-Secret-Key header.
+    """
+    # Security check
+    verify_claude_access(request, x_secret_key)
+
+    signals = signal_store.get_signals(SIGNALS_DB)
+    allocation = signal_store.get_allocation(SIGNALS_DB)
+    macro = signal_store.get_macro(SIGNALS_DB)
+    if not signals or allocation is None:
+        return "ERROR: No signal runs stored. POST /api/signals/run first."
+
+    news_path = Path("/app/data/news_condensed.txt")
+    news_text = news_path.read_text(encoding="utf-8") if news_path.exists() else None
+
+    full_input = build_analysis_input(signals, allocation, macro, news_text)
+
+    try:
+        # Write prompt to temp file for appuser to read (same pattern as /api/news/analyze)
+        temp_input = Path("/tmp/claude_signal_input.txt")
+        temp_input.write_text(full_input, encoding="utf-8")
+        os.chmod(temp_input, 0o644)
+
+        result = subprocess.run(
+            ["su", "-", "appuser", "-c",
+             "cd /app/data && claude -p --dangerously-skip-permissions < /tmp/claude_signal_input.txt"],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+
+        temp_input.unlink(missing_ok=True)
+
+        if result.returncode != 0:
+            return f"ERROR (exit {result.returncode}):\nSTDOUT: {result.stdout}\nSTDERR: {result.stderr}"
+        return result.stdout.strip()
+    except FileNotFoundError:
+        return "ERROR: `claude` CLI not found in container. Rebuild the Docker image."
+    except subprocess.TimeoutExpired:
+        return "ERROR: claude -p timed out after 300s."
+    except Exception as e:
+        return f"ERROR: {e}"
 
 
 # ============================================================================

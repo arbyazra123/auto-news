@@ -6,6 +6,7 @@ Comprehensive Indonesian stock market analysis platform with **News Pipeline + T
 - Automated news scraping and semantic search (Milvus vector database)
 - Technical analysis API (RSI, MACD, Bollinger Bands, Smart Money Flow)
 - Trading strategy screening (PREOPEN, BPJS, BSJP, Day Trade setups)
+- **Signal Platform**: PM buy/hold/sell signals across IDX80 + asset allocation (equities / government bonds / money market)
 - MCP server for AI assistant integration (Claude Desktop/Code)
 - RESTful API for programmatic access
 
@@ -116,6 +117,54 @@ Connect any MCP-compatible AI assistant (Claude, or other LLMs) and ask: *"Show 
 ```
 1. Fetch OHLCV from Yahoo Finance → 2. Calculate indicators → 3. Generate signals → 4. Return analysis
 ```
+
+**Signal Platform (daily batch):**
+```
+1. Fetch macro (INDOGB curve, BI rate, CPI) → 2. Score IDX80 equities → 3. Compute allocation → 4. Persist to SQLite → 5. (optional) Claude overlay report
+```
+
+### Signal Platform (PM Signals & Allocation)
+
+Rules-based signal engine supporting portfolio manager buy/hold/sell and
+allocation decisions across three asset classes:
+
+- **IDX80 equities** — composite score (trend 30%, momentum 25%, RSI 15%, volume flow 20%, MACD 10%) → BUY (≥65) / HOLD / SELL (≤40), with rationale
+- **Government bonds (INDOGB)** — real 10Y yield, yield momentum, curve slope (source: TradingView `TVC:ID*Y` yield curve)
+- **Money market** — real cash rate from BI 7-day rate vs CPI, defensive kicker
+
+Every run is persisted to `signals.db` (SQLite, in the shared data volume) so
+signal upgrades/downgrades can be tracked day over day. An optional Claude
+overlay cross-checks signals against scraped news and writes `signal_report.md`.
+
+**Endpoints** (all under the internal stock API, port 13052):
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/signals/run` | POST | Start batch (background); body: `{tickers?, period?, analyze?, notes?}` |
+| `/api/signals/status` | GET | Batch execution status |
+| `/api/signals/latest` | GET | Latest signals; filters: `?signal=BUY&min_score=60` |
+| `/api/signals/allocation` | GET | Recommended equity/bond/money-market weights + rationale |
+| `/api/signals/changes` | GET | Upgrades/downgrades vs previous run |
+| `/api/signals/ticker/{ticker}` | GET | One ticker's latest signal + history |
+| `/api/signals/macro` | GET | Live INDOGB curve, BI rate, inflation |
+| `/api/signals/analyze` | GET | 🔒 Claude overlay on stored run → `signal_report.md` |
+
+**CLI (same engine, for cron/manual runs):**
+```bash
+# Full IDX80 run into the data volume
+docker exec idx-stock-api python signals/run_signals.py --data-dir /app/data
+
+# Quick subset test + Claude overlay
+docker exec idx-stock-api python signals/run_signals.py --tickers BBCA,BBRI,TLKM --data-dir /app/data --analyze
+```
+
+**Configuration:**
+- Universe: `src/stock_api/signals/universe.py` (update on IDX rebalance announcements)
+- Scoring weights/thresholds: `src/stock_api/signals/equity_signals.py` (`SIGNAL_WEIGHTS`, `BUY_THRESHOLD`, `SELL_THRESHOLD`)
+- Benchmark weights, bands, tilts: `src/stock_api/signals/allocation.py` (`ALLOCATION_CONFIG`)
+
+> Disclaimer: signals are systematic inputs for a professional PM workflow,
+> not investment advice. Validate before acting.
 
 ### Why This Architecture?
 
